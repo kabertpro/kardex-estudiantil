@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kardex Estudiantil - Consulta Online</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* Panel de administración */
+        .admin-section {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            padding: 30px;
+            border-bottom: 3px solid #e91e63;
+        }
+
+        .admin-toggle {
+            background: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .admin-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .admin-panel {
+            display: none;
+            background: white;
+            margin-top: 20px;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: end;
+        }
+
+        .form-input, .form-select {
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #4facfe;
+        }
+
+        /* Sección de búsqueda */
+        .search-section {
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 16px;
+            min-width: 200px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 10px rgba(79, 172, 254, 0.3);
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff5f6d 0%, #ffc371 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Resultados */
+        .results {
+            padding: 30px;
+        }
+
+        .student-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-left: 5px solid #4facfe;
+            transition: all 0.3s ease;
+        }
+
+        .student-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .student-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .student-name {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .student-id {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .status-excellent { background: #d4edda; color: #155724; }
+        .status-good { background: #cce5ff; color: #0066cc; }
+        .status-warning { background: #fff3cd; color: #856404; }
+        .status-poor { background: #f8d7da; color: #721c24; }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .subject-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #28a745;
+        }
+
+        .subject-card.warning { border-left-color: #ffc107; }
+        .subject-card.danger { border-left-color: #dc3545; }
+
+        .subject-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .subject-name {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .subject-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .status-complete { background: #28a745; color: white; }
+        .status-pending { background: #ffc107; color: #212529; }
+        .status-failed { background: #dc3545; color: white; }
+
+        .incidents-list {
+            margin-top: 10px;
+        }
+
+        .incident-item {
+            background: white;
+            padding: 8px 12px;
+            margin: 5px 0;
+            border-radius: 6px;
+            font-size: 0.85em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .incident-date {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .incident-type {
+            background: #dc3545;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8em;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .student-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📚 Kardex Estudiantil</h1>
+            <p>Sistema de seguimiento académico - Consulta para padres de familia</p>
+        </div>
+
+        <!-- Panel de Administración -->
+        <div class="admin-section">
+            <button class="admin-toggle" onclick="toggleAdminPanel()">
+                🔧 Panel de Administración
+            </button>
+            
+            <div id="adminPanel" class="admin-panel">
+                <h3>Agregar Estudiante y Materias</h3>
+                
+                <div class="form-row">
+                    <input type="text" id="studentName" class="form-input" placeholder="Nombre completo del estudiante">
+                    <input type="text" id="studentId" class="form-input" placeholder="Código (ej: ABID-2S)">
+                    <input type="text" id="parentEmail" class="form-input" placeholder="Email del padre/madre">
+                    <button class="btn btn-success" onclick="addStudent()">➕ Agregar</button>
+                </div>
+
+                <h4 style="margin-top: 25px;">Registrar Incidencia</h4>
+                <div class="form-row">
+                    <select id="incidentStudent" class="form-select">
+                        <option value="">Seleccionar estudiante</option>
+                    </select>
+                    <select id="incidentSubject" class="form-select">
+                        <option value="Matemáticas">Matemáticas</option>
+                        <option value="Lenguaje">Lenguaje</option>
+                        <option value="Ciencias">Ciencias</option>
+                        <option value="Historia">Historia</option>
+                        <option value="Inglés">Inglés</option>
+                        <option value="Educación Física">Educación Física</option>
+                    </select>
+                    <select id="incidentType" class="form-select">
+                        <option value="No entregó tarea">No entregó tarea</option>
+                        <option value="Tardanza">Tardanza</option>
+                        <option value="Falta">Falta injustificada</option>
+                        <option value="Mal comportamiento">Mal comportamiento</option>
+                        <option value="No trajo materiales">No trajo materiales</option>
+                    </select>
+                    <button class="btn btn-danger" onclick="addIncident()">⚠️ Registrar</button>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-primary" onclick="exportData()">💾 Exportar Datos</button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+                    <button class="btn btn-primary" onclick="document.getElementById('importFile').click()">📂 Importar Datos</button>
+                    <button class="btn btn-danger" onclick="clearAllData()">🗑️ Limpiar Todo</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de Búsqueda -->
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" id="searchName" class="search-input" placeholder="Buscar por nombre del estudiante...">
+                <input type="text" id="searchId" class="search-input" placeholder="O buscar por código (ej: ABID-2S)">
+                <input type="email" id="searchEmail" class="search-input" placeholder="O buscar por email del padre/madre">
+                <button class="btn btn-primary" onclick="searchStudent()">🔍 Buscar</button>
+                <button class="btn btn-primary" onclick="showAllStudents()">📋 Ver Todos</button>
+            </div>
+        </div>
+
+        <!-- Resultados -->
+        <div class="results">
+            <div id="resultsContainer">
+                <div class="no-data">
+                    <h3>👋 Bienvenido al Sistema de Kardex</h3>
+                    <p>Use el panel de administración para agregar estudiantes, o busque un estudiante existente.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Base de datos local (se guarda en el navegador)
+        let studentsDB = JSON.parse(localStorage.getItem('kardex_students') || '[]');
+        let incidentsDB = JSON.parse(localStorage.getItem('kardex_incidents') || '[]');
+
+        // Función para guardar en localStorage
+        function saveData() {
+            localStorage.setItem('kardex_students', JSON.stringify(studentsDB));
+            localStorage.setItem('kardex_incidents', JSON.stringify(incidentsDB));
+            updateStudentSelect();
+        }
+
+        // Toggle panel de administración
+        function toggleAdminPanel() {
+            const panel = document.getElementById('adminPanel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Agregar estudiante
+        function addStudent() {
+            const name = document.getElementById('studentName').value.trim();
+            const id = document.getElementById('studentId').value.trim().toUpperCase();
+            const email = document.getElementById('parentEmail').value.trim().toLowerCase();
+
+            if (!name || !id) {
+                alert('❌ Por favor complete el nombre y código del estudiante');
+                return;
+            }
+
+            // Verificar si ya existe
+            if (studentsDB.find(s => s.id === id)) {
+                alert('❌ Ya existe un estudiante con ese código');
+                return;
+            }
+
+            const student = {
+                id: id,
+                name: name,
+                email: email,
+                dateAdded: new Date().toISOString().split('T')[0]
+            };
+
+            studentsDB.push(student);
+            saveData();
+
+            // Limpiar campos
+            document.getElementById('studentName').value = '';
+            document.getElementById('studentId').value = '';
+            document.getElementById('parentEmail').value = '';
+
+            alert('✅ Estudiante agregado correctamente');
+        }
+
+        // Actualizar select de estudiantes
+        function updateStudentSelect() {
+            const select = document.getElementById('incidentStudent');
+            select.innerHTML = '<option value="">Seleccionar estudiante</option>';
+            
+            studentsDB.forEach(student => {
+                select.innerHTML += `<option value="${student.id}">${student.name} (${student.id})</option>`;
+            });
+        }
+
+        // Agregar incidencia
+        function addIncident() {
+            const studentId = document.getElementById('incidentStudent').value;
+            const subject = document.getElementById('incidentSubject').value;
+            const type = document.getElementById('incidentType').value;
+
+            if (!studentId) {
+                alert('❌ Por favor seleccione un estudiante');
+                return;
+            }
+
+            const incident = {
+                id: Date.now(),
+                studentId: studentId,
+                subject: subject,
+                type: type,
+                date: new Date().toISOString().split('T')[0],
+                timestamp: new Date().toISOString()
+            };
+
+            incidentsDB.push(incident);
+            saveData();
+            alert('✅ Incidencia registrada');
+        }
+
+        // Buscar estudiante
+        function searchStudent() {
+            const searchName = document.getElementById('searchName').value.toLowerCase().trim();
+            const searchId = document.getElementById('searchId').value.toUpperCase().trim();
+            const searchEmail = document.getElementById('searchEmail').value.toLowerCase().trim();
+
+            let results = studentsDB;
+
+            if (searchName) {
+                results = results.filter(s => s.name.toLowerCase().includes(searchName));
+            }
+            
+            if (searchId) {
+                results = results.filter(s => s.id.includes(searchId));
+            }
+            
+            if (searchEmail) {
+                results = results.filter(s => s.email && s.email.includes(searchEmail));
+            }
+
+            if (!searchName && !searchId && !searchEmail) {
+                alert('❌ Por favor ingrese un criterio de búsqueda');
+                return;
+            }
+
+            displayResults(results);
+        }
+
+        // Mostrar todos los estudiantes
+        function showAllStudents() {
+            displayResults(studentsDB);
+        }
+
+        // Mostrar resultados
+        function displayResults(students) {
+            const container = document.getElementById('resultsContainer');
+
+            if (students.length === 0) {
+                container.innerHTML = `
+                    <div class="no-data">
+                        <h3>❌ No se encontraron estudiantes</h3>
+                        <p>Verifique los criterios de búsqueda o agregue estudiantes desde el panel de administración.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+
+            students.forEach(student => {
+                const studentIncidents = incidentsDB.filter(inc => inc.studentId === student.id);
+                const subjectSummary = getSubjectSummary(studentIncidents);
+                const overallStatus = getOverallStatus(subjectSummary);
+
+                html += `
+                    <div class="student-card">
+                        <div class="student-header">
+                            <div>
+                                <div class="student-name">👤 ${student.name}</div>
+                                <div class="student-id">📋 Código: ${student.id}</div>
+                                ${student.email ? `<div class="student-id">📧 Contacto: ${student.email}</div>` : ''}
+                            </div>
+                            <div class="status-badge ${overallStatus.class}">${overallStatus.text}</div>
+                        </div>
+
+                        <div class="subjects-grid">
+                `;
+
+                Object.keys(subjectSummary).forEach(subject => {
+                    const data = subjectSummary[subject];
+                    html += `
+                        <div class="subject-card ${data.incidents.length > 3 ? 'danger' : data.incidents.length > 0 ? 'warning' : ''}">
+                            <div class="subject-header">
+                                <span class="subject-name">📖 ${subject}</span>
+                                <span class="subject-status ${data.incidents.length === 0 ? 'status-complete' : data.incidents.length > 3 ? 'status-failed' : 'status-pending'}">
+                                    ${data.incidents.length === 0 ? 'Sin problemas' : data.incidents.length > 3 ? 'Requiere atención' : 'Observando'}
+                                </span>
+                            </div>
+                            
+                            ${data.incidents.length > 0 ? `
+                                <div class="incidents-list">
+                                    ${data.incidents.slice(-5).map(inc => `
+                                        <div class="incident-item">
+                                            <span class="incident-date">📅 ${inc.date}</span>
+                                            <span class="incident-type">${inc.type}</span>
+                                        </div>
+                                    `).join('')}
+                                    ${data.incidents.length > 5 ? `<div style="text-align: center; color: #666; font-size: 0.8em;">...y ${data.incidents.length - 5} más</div>` : ''}
+                                </div>
+                            ` : `
+                                <div style="text-align: center; color: #28a745; font-style: italic;">✅ Sin incidencias registradas</div>
+                            `}
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Obtener resumen por materia
+        function getSubjectSummary(incidents) {
+            const subjects = ['Matemáticas', 'Lenguaje', 'Ciencias', 'Historia', 'Inglés', 'Educación Física'];
+            const summary = {};
+
+            subjects.forEach(subject => {
+                summary[subject] = {
+                    incidents: incidents.filter(inc => inc.subject === subject)
+                };
+            });
+
+            return summary;
+        }
+
+        // Obtener estado general
+        function getOverallStatus(subjectSummary) {
+            const totalIncidents = Object.values(subjectSummary).reduce((total, subject) => total + subject.incidents.length, 0);
+
+            if (totalIncidents === 0) return { class: 'status-excellent', text: '🏆 Excelente' };
+            if (totalIncidents <= 3) return { class: 'status-good', text: '👍 Bueno' };
+            if (totalIncidents <= 6) return { class: 'status-warning', text: '⚠️ Requiere atención' };
+            return { class: 'status-poor', text: '❌ Requiere intervención' };
+        }
+
+        // Exportar datos
+        function exportData() {
+            const data = {
+                students: studentsDB,
+                incidents: incidentsDB,
+                exportDate: new Date().toISOString()
+            };
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `kardex_backup_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Importar datos
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.students && data.incidents) {
+                        studentsDB = data.students;
+                        incidentsDB = data.incidents;
+                        saveData();
+                        alert('✅ Datos importados correctamente');
+                        showAllStudents();
+                    } else {
+                        alert('❌ Archivo de respaldo inválido');
+                    }
+                } catch (error) {
+                    alert('❌ Error al leer el archivo');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Limpiar todos los datos
+        function clearAllData() {
+            if (confirm('⚠️ ¿Está seguro que desea eliminar todos los datos? Esta acción no se puede deshacer.')) {
+                studentsDB = [];
+                incidentsDB = [];
+                saveData();
+                document.getElementById('resultsContainer').innerHTML = `
+                    <div class="no-data">
+                        <h3>🗑️ Datos eliminados</h3>
+                        <p>Todos los datos han sido eliminados correctamente.</p>
+                    </div>
+                `;
+                alert('✅ Todos los datos han sido eliminados');
+            }
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStudentSelect();
+            if (studentsDB.length > 0) {
+                showAllStudents();
+            }
+        });
+
+        // Permitir búsqueda con Enter
+        ['searchName', 'searchId', 'searchEmail'].forEach(id => {
+            document.getElementById(id).addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') searchStudent();
+            });
+        });
+    </script>
+</body>
+</html>
