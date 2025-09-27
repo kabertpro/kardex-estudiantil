@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kardex Estudiantil - Consulta Segura</title>
+    <title>Kardex Estudiantil - Prof. Luis Miguel Kapa Escobar</title>
     <style>
         * {
             margin: 0;
@@ -43,6 +43,14 @@
         .header p {
             font-size: 1.3em;
             opacity: 0.95;
+            margin-bottom: 10px;
+        }
+
+        .professor-name {
+            font-size: 1.1em;
+            opacity: 0.9;
+            font-style: italic;
+            margin-top: 15px;
         }
 
         /* Panel de administración */
@@ -365,6 +373,10 @@
             .student-name {
                 font-size: 1.8em;
             }
+
+            .admin-input {
+                width: 90%;
+            }
         }
     </style>
 </head>
@@ -374,6 +386,7 @@
         <div class="header">
             <h1>🎓 Kardex Estudiantil</h1>
             <p>Sistema de seguimiento académico personalizado</p>
+            <div class="professor-name">Prof. Luis Miguel Kapa Escobar</div>
         </div>
 
         <!-- Panel de Administración -->
@@ -459,6 +472,7 @@
                     <h3>📋 Sistema de Kardex</h3>
                     <p>Los administradores pueden agregar estudiantes e incidencias.<br>
                     Los padres pueden consultar el estado de sus hijos usando las iniciales de sus nombres.</p>
+                    <p><strong>Profesor responsable:</strong> Prof. Luis Miguel Kapa Escobar</p>
                 </div>
             </div>
         </div>
@@ -468,7 +482,7 @@
     <script type="module">
         // Import Firebase
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getFirestore, collection, addDoc, getDocs, query, where, orderBy, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getFirestore, collection, addDoc, getDocs, query, where, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         // Firebase configuration
         const firebaseConfig = {
@@ -485,6 +499,10 @@
         const db = getFirestore(app);
 
         // Global variables
+        let isAdminLoggedIn = false;
+        const ADMIN_PASSWORD = "kardex2024admin"; // Cambia esta clave por una más segura
+
+        // Make functions globally available
         window.db = db;
         window.collection = collection;
         window.addDoc = addDoc;
@@ -492,9 +510,6 @@
         window.query = query;
         window.where = where;
         window.orderBy = orderBy;
-
-        let isAdminLoggedIn = false;
-        const ADMIN_PASSWORD = "kardex2024admin"; // Cambia esta clave por una más segura
 
         // Check admin access
         window.checkAdminAccess = function() {
@@ -505,7 +520,7 @@
                 document.getElementById('adminPassword').style.display = 'none';
                 loadStudentsForSelect();
                 alert('✅ Acceso de administrador concedido');
-            } else {
+            } else if (password.length > 0) {
                 alert('❌ Clave de administrador incorrecta');
             }
         };
@@ -564,7 +579,7 @@
                 
             } catch (error) {
                 console.error('Error adding student:', error);
-                alert('❌ Error al agregar estudiante');
+                alert('❌ Error al agregar estudiante: ' + error.message);
             }
 
             showLoading(false);
@@ -601,7 +616,7 @@
                 
             } catch (error) {
                 console.error('Error adding incident:', error);
-                alert('❌ Error al registrar incidencia');
+                alert('❌ Error al registrar incidencia: ' + error.message);
             }
 
             showLoading(false);
@@ -668,7 +683,7 @@
                 
             } catch (error) {
                 console.error('Error searching student:', error);
-                showError('❌ Error al buscar estudiante');
+                showError('❌ Error al buscar estudiante: ' + error.message);
             }
 
             showLoading(false);
@@ -691,7 +706,7 @@
                     const student = { id: doc.id, ...doc.data() };
                     
                     // Get incidents for this student
-                    const incidentsQuery = query(collection(db, 'incidents'), where('studentId', '==', student.id));
+                    const incidentsQuery = query(collection(db, 'incidents'), where('studentId', '==', student.id), orderBy('createdAt', 'desc'));
                     const incidentsSnapshot = await getDocs(incidentsQuery);
                     
                     const incidents = [];
@@ -706,7 +721,7 @@
                 
             } catch (error) {
                 console.error('Error loading all students:', error);
-                showError('❌ Error al cargar estudiantes');
+                showError('❌ Error al cargar estudiantes: ' + error.message);
             }
 
             showLoading(false);
@@ -721,6 +736,7 @@
                     <div class="no-data">
                         <h3>❌ No hay estudiantes registrados</h3>
                         <p>El administrador debe agregar estudiantes primero.</p>
+                        <p><strong>Profesor responsable:</strong> Prof. Luis Miguel Kapa Escobar</p>
                     </div>
                 `;
                 return;
@@ -819,12 +835,57 @@
             document.getElementById('resultsContainer').innerHTML = `<div class="error"><h3>${message}</h3></div>`;
         };
 
-        // Export and import functions (simplified for Firebase)
-        window.exportData = function() {
-            alert('ℹ️ Los datos están seguros en Firebase. Use el panel de Firebase Console para respaldos avanzados.');
+        // Export data
+        window.exportData = async function() {
+            if (!isAdminLoggedIn) {
+                alert('❌ Acceso denegado');
+                return;
+            }
+
+            showLoading(true);
+            
+            try {
+                // Get all students
+                const studentsSnapshot = await getDocs(collection(db, 'students'));
+                const students = [];
+                studentsSnapshot.forEach((doc) => {
+                    students.push({ id: doc.id, ...doc.data() });
+                });
+
+                // Get all incidents
+                const incidentsSnapshot = await getDocs(collection(db, 'incidents'));
+                const incidents = [];
+                incidentsSnapshot.forEach((doc) => {
+                    incidents.push({ id: doc.id, ...doc.data() });
+                });
+
+                const exportData = {
+                    students: students,
+                    incidents: incidents,
+                    exportDate: new Date().toISOString(),
+                    professor: "Prof. Luis Miguel Kapa Escobar"
+                };
+
+                const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `kardex_backup_${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+
+                alert('✅ Datos exportados correctamente');
+
+            } catch (error) {
+                console.error('Export error:', error);
+                alert('❌ Error al exportar: ' + error.message);
+            }
+
+            showLoading(false);
         };
 
-        window.importData = function(event) {
+        // Import data
+        window.importData = async function(event) {
             if (!isAdminLoggedIn) {
                 alert('❌ Acceso denegado');
                 return;
@@ -838,37 +899,68 @@
                 try {
                     const data = JSON.parse(e.target.result);
                     
-                    if (!data.students || !data.incidents) {
+                    if (!data.students || !Array.isArray(data.students)) {
                         alert('❌ Formato de archivo inválido');
                         return;
                     }
 
                     showLoading(true);
 
+                    let addedStudents = 0;
+                    let addedIncidents = 0;
+
                     // Import students
                     for (const student of data.students) {
                         try {
-                            await addDoc(collection(db, 'students'), {
-                                name: student.name,
-                                initials: student.id || student.initials,
-                                parentEmail: student.email || '',
+                            const studentData = {
+                                name: student.name || 'Nombre no disponible',
+                                initials: student.initials || student.id || 'XXXX',
+                                parentEmail: student.parentEmail || student.email || '',
                                 dateAdded: new Date().toISOString(),
                                 createdAt: new Date()
-                            });
+                            };
+
+                            // Check if initials already exist
+                            const existingQuery = query(collection(db, 'students'), where('initials', '==', studentData.initials));
+                            const existingSnapshot = await getDocs(existingQuery);
+
+                            if (existingSnapshot.empty) {
+                                await addDoc(collection(db, 'students'), studentData);
+                                addedStudents++;
+                            }
                         } catch (error) {
                             console.warn('Error importing student:', student.name, error);
                         }
                     }
 
-                    alert(`✅ Datos importados: ${data.students.length} estudiantes, ${data.incidents.length} incidencias`);
+                    // Import incidents if available
+                    if (data.incidents && Array.isArray(data.incidents)) {
+                        for (const incident of data.incidents) {
+                            try {
+                                await addDoc(collection(db, 'incidents'), {
+                                    studentId: incident.studentId,
+                                    subject: incident.subject || 'General',
+                                    type: incident.type || 'Incidencia general',
+                                    date: incident.date || new Date().toISOString().split('T')[0],
+                                    createdAt: new Date()
+                                });
+                                addedIncidents++;
+                            } catch (error) {
+                                console.warn('Error importing incident:', error);
+                            }
+                        }
+                    }
+
+                    alert(`✅ Importación completa:\n${addedStudents} estudiantes agregados\n${addedIncidents} incidencias agregadas`);
                     loadStudentsForSelect();
                     
                 } catch (error) {
                     console.error('Import error:', error);
-                    alert('❌ Error al importar archivo');
+                    alert('❌ Error al importar archivo: ' + error.message);
                 }
 
                 showLoading(false);
+                event.target.value = ''; // Reset file input
             };
             
             reader.readAsText(file);
@@ -876,7 +968,7 @@
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
-            // Auto-uppercase for initials input
+            // Auto-uppercase for initials inputs
             document.getElementById('studentInitials').addEventListener('input', function(e) {
                 e.target.value = e.target.value.toUpperCase();
             });
@@ -885,5 +977,19 @@
                 e.target.value = e.target.value.toUpperCase();
             });
 
+            // Welcome message
             console.log('🔥 Firebase Kardex System loaded successfully!');
+            console.log('👨‍🏫 Profesor: Luis Miguel Kapa Escobar');
         });
+
+        // Error handling
+        window.addEventListener('error', function(e) {
+            console.error('Global error:', e.error);
+            if (e.error && e.error.message && e.error.message.includes('Firebase')) {
+                alert('⚠️ Error de conexión con Firebase. Verifique su conexión a internet.');
+            }
+        });
+
+    </script>
+</body>
+</html>
