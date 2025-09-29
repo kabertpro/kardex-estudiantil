@@ -735,15 +735,15 @@
                     <select id="incidentSubject" class="form-select">
                         <option value="Matemáticas">Matemáticas</option>
                         <option value="Lenguaje">Lenguaje</option>
-                        <option value="Psicologia-Filosofia">Psicología-Filosofía</option>
-                        <option value="Biologia-Geografia">Biología-Geografía</option>
+                        <option value="Psicología-Filosofía">Psicología-Filosofía</option>
+                        <option value="Biología-Geografía">Biología-Geografía</option>
                         <option value="Ciencias Sociales">Ciencias Sociales</option>
-                        <option value="Ingles">Inglés</option>
-                        <option value="Tecnologia">Tecnología</option>
-                        <option value="Educacion Fisica">Educación Física</option>
-                        <option value="Musica">Música</option>
-                        <option value="Artes Plasticas">Artes Plásticas</option>
-                        <option value="Religion">Religión</option>
+                        <option value="Inglés">Inglés</option>
+                        <option value="Tecnología">Tecnología</option>
+                        <option value="Educación Física">Educación Física</option>
+                        <option value="Música">Música</option>
+                        <option value="Artes Plásticas">Artes Plásticas</option>
+                        <option value="Religión">Religión</option>
                     </select>
                     <select id="incidentType" class="form-select">
                         <option value="No entregó tarea">No entregó tarea</option>
@@ -755,14 +755,7 @@
                         <option value="Disrupción en clase">Disrupción en clase</option>
                         <option value="No participó">No participó</option>
                     </select>
-                    <select id="incidentDay" class="form-select">
-                        <option value="Lunes">Lunes</option>
-                        <option value="Martes">Martes</option>
-                        <option value="Miércoles">Miércoles</option>
-                        <option value="Jueves">Jueves</option>
-                        <option value="Viernes">Viernes</option>
-                        <option value="Sábado">Sábado</option>
-                    </select>
+                    <input type="date" id="incidentDate" class="form-input" style="text-align: center;">
                     <button class="btn btn-danger" onclick="addIncident()">Registrar</button>
                 </div>
 
@@ -930,13 +923,23 @@
             const studentId = document.getElementById('incidentStudent').value;
             const subject = document.getElementById('incidentSubject').value;
             const type = document.getElementById('incidentType').value;
-            const day = document.getElementById('incidentDay').value;
+            const selectedDate = document.getElementById('incidentDate').value;
             const observation = document.getElementById('incidentObservation').value.trim();
 
             if (!studentId) {
                 alert('❌ Seleccione un estudiante');
                 return;
             }
+
+            if (!selectedDate) {
+                alert('❌ Seleccione una fecha');
+                return;
+            }
+
+            // Calcular el día de la semana desde la fecha seleccionada
+            const dateObj = new Date(selectedDate + 'T00:00:00');
+            const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+            const dayOfWeek = days[dateObj.getDay()];
 
             showLoading(true);
 
@@ -945,9 +948,9 @@
                     studentId: studentId,
                     subject: subject,
                     type: type,
-                    day: day,
-                    observation: observation || '', // Campo opcional
-                    date: new Date().toISOString().split('T')[0],
+                    day: dayOfWeek,
+                    observation: observation || '',
+                    date: selectedDate,
                     createdAt: new Date()
                 });
 
@@ -1150,9 +1153,9 @@
         // Get subject summary
         function getSubjectSummary(incidents) {
             const subjects = [
-                'Matemáticas', 'Lenguaje', 'Psicologia-Filosofia', 'Biologia-Geografia',
-                'Ciencias Sociales', 'Ingles', 'Tecnologia', 'Educacion Fisica',
-                'Musica', 'Artes Plasticas', 'Religion'
+                'Matemáticas', 'Lenguaje', 'Psicología-Filosofía', 'Biología-Geografía',
+                'Ciencias Sociales', 'Inglés', 'Tecnología', 'Educación Física',
+                'Música', 'Artes Plásticas', 'Religión'
             ];
             const summary = {};
 
@@ -1329,21 +1332,13 @@
                 e.target.value = e.target.value.toUpperCase();
             });
 
-            // Set default day to current day
+            // Set default date to today
             const today = new Date();
-            const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-            const currentDay = days[today.getDay()];
-            const daySelect = document.getElementById('incidentDay');
-            
-            // Set current day as default if it's a weekday
-            if (currentDay !== 'Domingo') {
-                for (let option of daySelect.options) {
-                    if (option.value === currentDay) {
-                        option.selected = true;
-                        break;
-                    }
-                }
-            }
+            const dateInput = document.getElementById('incidentDate');
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            dateInput.value = `${year}-${month}-${day}`;
 
             // Welcome message
             console.log('🔥 Firebase Kardex System loaded successfully!');
