@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+</html><!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -366,11 +366,213 @@
             line-height: 1.4;
         }
 
-        .loading {
-            text-align: center;
+        .incident-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            justify-content: flex-end;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 15px;
+            font-size: 11px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-small:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .modal-title {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .report-options {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .checkbox-label:hover {
+            background: rgba(79, 172, 254, 0.1);
+        }
+
+        .checkbox-label input {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .print-area, .print-area * {
+                visibility: visible;
+            }
+            .print-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        .print-report {
             padding: 40px;
+            max-width: 21cm;
+            margin: 0 auto;
+            background: white;
+        }
+
+        .report-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #4facfe;
+            padding-bottom: 20px;
+        }
+
+        .report-title {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .report-student-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .report-incidents-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .report-incidents-table th,
+        .report-incidents-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .report-incidents-table th {
+            background: #4facfe;
+            color: white;
+            font-weight: bold;
+        }
+
+        .report-incidents-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .report-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
+            text-align: center;
             color: #666;
-            font-size: 1.2em;
         }
 
         .error {
@@ -806,11 +1008,98 @@
         </div>
     </div>
 
+    <!-- Modal para editar incidencia -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">✏️ Editar Incidencia</h2>
+                <span class="close" onclick="closeEditModal()">&times;</span>
+            </div>
+            <div>
+                <input type="hidden" id="editIncidentId">
+                <input type="hidden" id="editStudentId">
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Materia:</label>
+                    <select id="editSubject" class="form-select" style="width: 100%;">
+                        <option value="Matemáticas">Matemáticas</option>
+                        <option value="Lenguaje">Lenguaje</option>
+                        <option value="Psicología-Filosofía">Psicología-Filosofía</option>
+                        <option value="Biología-Geografía">Biología-Geografía</option>
+                        <option value="Ciencias Sociales">Ciencias Sociales</option>
+                        <option value="Inglés">Inglés</option>
+                        <option value="Tecnología">Tecnología</option>
+                        <option value="Educación Física">Educación Física</option>
+                        <option value="Música">Música</option>
+                        <option value="Artes Plásticas">Artes Plásticas</option>
+                        <option value="Religión">Religión</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Tipo:</label>
+                    <select id="editType" class="form-select" style="width: 100%;">
+                        <option value="No entregó tarea">No entregó tarea</option>
+                        <option value="Tardanza">Tardanza</option>
+                        <option value="Falta injustificada">Falta injustificada</option>
+                        <option value="Mal comportamiento">Mal comportamiento</option>
+                        <option value="No trajo materiales">No trajo materiales</option>
+                        <option value="No siguió instrucciones">No siguió instrucciones</option>
+                        <option value="Disrupción en clase">Disrupción en clase</option>
+                        <option value="No participó">No participó</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Fecha:</label>
+                    <input type="date" id="editDate" class="form-input" style="width: 100%;">
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Observación:</label>
+                    <textarea id="editObservation" class="form-textarea" style="width: 100%;"></textarea>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn btn-success" onclick="saveEditIncident()">💾 Guardar Cambios</button>
+                    <button class="btn btn-danger" onclick="closeEditModal()">❌ Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para generar reporte -->
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">📄 Generar Reporte</h2>
+                <span class="close" onclick="closeReportModal()">&times;</span>
+            </div>
+            <div class="report-options">
+                <h4>Seleccionar materias para el reporte:</h4>
+                <div style="margin: 15px 0;">
+                    <label class="checkbox-label" style="font-weight: bold;">
+                        <input type="checkbox" id="selectAllSubjects" onchange="toggleAllSubjects(this)"> 
+                        Todas las materias
+                    </label>
+                </div>
+                <div class="checkbox-group" id="subjectsCheckboxes"></div>
+            </div>
+            <div style="text-align: center;">
+                <button class="btn btn-primary" onclick="generateReport()">🖨️ Generar e Imprimir</button>
+                <button class="btn btn-danger" onclick="closeReportModal()">❌ Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Área de impresión (oculta) -->
+    <div id="printArea" class="print-area" style="display: none;"></div>
+
     <!-- Firebase SDK -->
     <script type="module">
         // Import Firebase
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getFirestore, collection, addDoc, getDocs, query, where, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getFirestore, collection, addDoc, getDocs, query, where, orderBy, doc, deleteDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         // Firebase configuration
         const firebaseConfig = {
@@ -828,7 +1117,10 @@
 
         // Global variables
         let isAdminLoggedIn = false;
-        const ADMIN_PASSWORD = "kabert2000"; // Nueva contraseña
+        const ADMIN_PASSWORD = "kabert2000";
+        let currentStudentForReport = null;
+        let currentIncidentForEdit = null;
+        let allIncidentsData = []; // Nueva contraseña
 
         // Make functions globally available
         window.db = db;
@@ -838,6 +1130,9 @@
         window.query = query;
         window.where = where;
         window.orderBy = orderBy;
+        window.doc = doc;
+        window.deleteDoc = deleteDoc;
+        window.updateDoc = updateDoc;
 
         // Check admin access
         window.checkAdminAccess = function() {
@@ -1021,7 +1316,7 @@
 
                 const incidents = [];
                 incidentsSnapshot.forEach((doc) => {
-                    incidents.push(doc.data());
+                    incidents.push({ id: doc.id, ...doc.data() });
                 });
 
                 displayStudentResults([{ ...student, incidents }]);
@@ -1056,7 +1351,7 @@
                     
                     const incidents = [];
                     incidentsSnapshot.forEach((incDoc) => {
-                        incidents.push(incDoc.data());
+                        incidents.push({ id: incDoc.id, ...incDoc.data() });
                     });
 
                     students.push({ ...student, incidents });
@@ -1121,16 +1416,21 @@
                             
                             ${data.incidents.length > 0 ? `
                                 <div class="incidents-list">
-                                    ${data.incidents.slice(-3).map(inc => `
-                                        <div class="incident-item">
+                                    ${data.incidents.map((inc, index) => `
+                                        <div class="incident-item" data-incident-id="${inc.id || ''}">
                                             <div class="incident-header">
                                                 <span class="incident-date-day">📅 ${inc.date} - ${inc.day || 'N/A'}</span>
                                                 <span class="incident-type">${inc.type}</span>
                                             </div>
                                             ${inc.observation ? `<div class="incident-observation">📝 ${inc.observation}</div>` : ''}
+                                            ${isAdminLoggedIn ? `
+                                                <div class="incident-actions no-print">
+                                                    <button class="btn-small btn-edit" onclick='editIncident(${JSON.stringify(inc)})'>✏️ Editar</button>
+                                                    <button class="btn-small btn-delete" onclick='deleteIncident("${inc.id}", "${student.id}")'>🗑️ Eliminar</button>
+                                                </div>
+                                            ` : ''}
                                         </div>
                                     `).join('')}
-                                    ${data.incidents.length > 3 ? `<div style="text-align: center; color: #666; font-size: 0.9em; margin-top: 10px;">...y ${data.incidents.length - 3} incidencias más</div>` : ''}
                                 </div>
                             ` : `
                                 <div style="text-align: center; color: #28a745; font-weight: bold; padding: 15px;">
@@ -1143,6 +1443,12 @@
 
                 html += `
                         </div>
+                        ${isAdminLoggedIn ? `
+                            <div class="admin-actions no-print">
+                                <button class="btn btn-primary" onclick='openReportModal(${JSON.stringify(student).replace(/'/g, "&apos;")})'>📄 Generar Reporte</button>
+                                <button class="btn btn-danger" onclick='deleteStudent("${student.id}", "${student.name}")'>🗑️ Eliminar Estudiante</button>
+                            </div>
+                        ` : ''}
                     </div>
                 `;
             });
@@ -1344,6 +1650,330 @@
             console.log('🔥 Firebase Kardex System loaded successfully!');
             console.log('👨‍🏫 Profesor: Luis Miguel Kapa Escobar');
         });
+
+        // Error handling
+        window.addEventListener('error', function(e) {
+            console.error('Global error:', e.error);
+            if (e.error && e.error.message && e.error.message.includes('Firebase')) {
+                alert('⚠️ Error de conexión con Firebase. Verifique su conexión a internet.');
+            }
+        });
+
+
+
+
+       // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-uppercase for initials inputs
+            document.getElementById('studentInitials').addEventListener('input', function(e) {
+                e.target.value = e.target.value.toUpperCase();
+            });
+            
+            document.getElementById('studentInitialsSearch').addEventListener('input', function(e) {
+                e.target.value = e.target.value.toUpperCase();
+            });
+
+            // Set default date to today
+            const today = new Date();
+            const dateInput = document.getElementById('incidentDate');
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            dateInput.value = `${year}-${month}-${day}`;
+
+            // Welcome message
+            console.log('🔥 Firebase Kardex System loaded successfully!');
+            console.log('👨‍🏫 Profesor: Luis Miguel Kapa Escobar');
+        });
+
+        // ============= NUEVAS FUNCIONES =============
+
+        // Editar incidencia
+        window.editIncident = function(incident) {
+            if (!isAdminLoggedIn) {
+                alert('❌ Acceso denegado');
+                return;
+            }
+
+            currentIncidentForEdit = incident;
+            
+            document.getElementById('editIncidentId').value = incident.id;
+            document.getElementById('editStudentId').value = incident.studentId;
+            document.getElementById('editSubject').value = incident.subject;
+            document.getElementById('editType').value = incident.type;
+            document.getElementById('editDate').value = incident.date;
+            document.getElementById('editObservation').value = incident.observation || '';
+            
+            document.getElementById('editModal').style.display = 'block';
+        };
+
+        window.closeEditModal = function() {
+            document.getElementById('editModal').style.display = 'none';
+            currentIncidentForEdit = null;
+        };
+
+        window.saveEditIncident = async function() {
+            if (!isAdminLoggedIn) {
+                alert('❌ Acceso denegado');
+                return;
+            }
+
+            const incidentId = document.getElementById('editIncidentId').value;
+            const subject = document.getElementById('editSubject').value;
+            const type = document.getElementById('editType').value;
+            const selectedDate = document.getElementById('editDate').value;
+            const observation = document.getElementById('editObservation').value.trim();
+
+            // Calcular día de la semana
+            const dateObj = new Date(selectedDate + 'T00:00:00');
+            const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+            const dayOfWeek = days[dateObj.getDay()];
+
+            showLoading(true);
+
+            try {
+                const incidentRef = doc(db, 'incidents', incidentId);
+                await updateDoc(incidentRef, {
+                    subject: subject,
+                    type: type,
+                    date: selectedDate,
+                    day: dayOfWeek,
+                    observation: observation
+                });
+
+                alert('✅ Incidencia actualizada correctamente');
+                closeEditModal();
+                
+                // Recargar datos
+                if (isAdminLoggedIn) {
+                    loadAllStudentsAdmin();
+                }
+                
+            } catch (error) {
+                console.error('Error updating incident:', error);
+                alert('❌ Error al actualizar incidencia: ' + error.message);
+            }
+
+            showLoading(false);
+        };
+
+        // Eliminar incidencia
+        window.deleteIncident = async function(incidentId, studentId) {
+            if (!isAdminLoggedIn) {
+                alert('❌ Acceso denegado');
+                return;
+            }
+
+            if (!confirm('¿Está seguro de eliminar esta incidencia?')) {
+                return;
+            }
+
+            showLoading(true);
+
+            try {
+                await deleteDoc(doc(db, 'incidents', incidentId));
+                alert('✅ Incidencia eliminada');
+                
+                // Recargar datos
+                if (isAdminLoggedIn) {
+                    loadAllStudentsAdmin();
+                }
+                
+            } catch (error) {
+                console.error('Error deleting incident:', error);
+                alert('❌ Error al eliminar incidencia: ' + error.message);
+            }
+
+            showLoading(false);
+        };
+
+        // Eliminar estudiante
+        window.deleteStudent = async function(studentId, studentName) {
+            if (!isAdminLoggedIn) {
+                alert('❌ Acceso denegado');
+                return;
+            }
+
+            if (!confirm(`¿Está seguro de eliminar al estudiante "${studentName}" y todas sus incidencias? Esta acción no se puede deshacer.`)) {
+                return;
+            }
+
+            showLoading(true);
+
+            try {
+                // Eliminar todas las incidencias del estudiante
+                const incidentsQuery = query(collection(db, 'incidents'), where('studentId', '==', studentId));
+                const incidentsSnapshot = await getDocs(incidentsQuery);
+                
+                const deletePromises = [];
+                incidentsSnapshot.forEach((incidentDoc) => {
+                    deletePromises.push(deleteDoc(doc(db, 'incidents', incidentDoc.id)));
+                });
+                
+                await Promise.all(deletePromises);
+                
+                // Eliminar el estudiante
+                await deleteDoc(doc(db, 'students', studentId));
+                
+                alert('✅ Estudiante y sus incidencias eliminados correctamente');
+                
+                // Recargar datos
+                loadAllStudentsAdmin();
+                loadStudentsForSelect();
+                
+            } catch (error) {
+                console.error('Error deleting student:', error);
+                alert('❌ Error al eliminar estudiante: ' + error.message);
+            }
+
+            showLoading(false);
+        };
+
+        // Abrir modal de reporte
+        window.openReportModal = function(student) {
+            if (!isAdminLoggedIn) {
+                alert('❌ Acceso denegado');
+                return;
+            }
+
+            currentStudentForReport = student;
+            
+            // Crear checkboxes de materias
+            const subjects = [
+                'Matemáticas', 'Lenguaje', 'Psicología-Filosofía', 'Biología-Geografía',
+                'Ciencias Sociales', 'Inglés', 'Tecnología', 'Educación Física',
+                'Música', 'Artes Plásticas', 'Religión'
+            ];
+            
+            const checkboxContainer = document.getElementById('subjectsCheckboxes');
+            checkboxContainer.innerHTML = '';
+            
+            subjects.forEach(subject => {
+                const label = document.createElement('label');
+                label.className = 'checkbox-label';
+                label.innerHTML = `
+                    <input type="checkbox" class="subject-checkbox" value="${subject}" checked> 
+                    ${subject}
+                `;
+                checkboxContainer.appendChild(label);
+            });
+            
+            document.getElementById('selectAllSubjects').checked = true;
+            document.getElementById('reportModal').style.display = 'block';
+        };
+
+        window.closeReportModal = function() {
+            document.getElementById('reportModal').style.display = 'none';
+            currentStudentForReport = null;
+        };
+
+        window.toggleAllSubjects = function(checkbox) {
+            const allCheckboxes = document.querySelectorAll('.subject-checkbox');
+            allCheckboxes.forEach(cb => {
+                cb.checked = checkbox.checked;
+            });
+        };
+
+        window.generateReport = function() {
+            if (!currentStudentForReport) return;
+
+            const selectedSubjects = Array.from(document.querySelectorAll('.subject-checkbox:checked'))
+                .map(cb => cb.value);
+
+            if (selectedSubjects.length === 0) {
+                alert('❌ Seleccione al menos una materia');
+                return;
+            }
+
+            // Filtrar incidencias por materias seleccionadas
+            const filteredIncidents = (currentStudentForReport.incidents || [])
+                .filter(inc => selectedSubjects.includes(inc.subject))
+                .sort((a, b) => new Date(a.date) - new Date(b.date)); // Ordenar por fecha ascendente
+
+            if (filteredIncidents.length === 0) {
+                alert('ℹ️ No hay incidencias registradas para las materias seleccionadas');
+                return;
+            }
+
+            // Generar HTML del reporte
+            const reportHTML = `
+                <div class="print-report">
+                    <div class="report-header">
+                        <h1 class="report-title">📋 Reporte de Incidencias</h1>
+                        <p><strong>Prof. Luis Miguel Kapa Escobar</strong></p>
+                        <p>Fecha de emisión: ${new Date().toLocaleDateString('es-ES')}</p>
+                    </div>
+
+                    <div class="report-student-info">
+                        <h2>👤 Información del Estudiante</h2>
+                        <p><strong>Nombre:</strong> ${currentStudentForReport.name}</p>
+                        <p><strong>Código:</strong> ${currentStudentForReport.initials}</p>
+                        <p><strong>Total de incidencias:</strong> ${filteredIncidents.length}</p>
+                        <p><strong>Materias incluidas:</strong> ${selectedSubjects.join(', ')}</p>
+                    </div>
+
+                    <h3>📝 Detalle de Incidencias (Ordenadas por fecha)</h3>
+                    <table class="report-incidents-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Fecha</th>
+                                <th>Día</th>
+                                <th>Materia</th>
+                                <th>Tipo</th>
+                                <th>Observación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${filteredIncidents.map((inc, index) => `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td>${inc.date}</td>
+                                    <td>${inc.day || 'N/A'}</td>
+                                    <td>${inc.subject}</td>
+                                    <td>${inc.type}</td>
+                                    <td>${inc.observation || '-'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+
+                    <div class="report-footer">
+                        <p>Este reporte es un documento oficial del sistema Kardex Estudiantil</p>
+                        <p><strong>Prof. Luis Miguel Kapa Escobar</strong></p>
+                        <p>_______________________</p>
+                        <p>Firma</p>
+                    </div>
+                </div>
+            `;
+
+            const printArea = document.getElementById('printArea');
+            printArea.innerHTML = reportHTML;
+            printArea.style.display = 'block';
+
+            // Imprimir
+            window.print();
+
+            // Ocultar área de impresión después de imprimir
+            setTimeout(() => {
+                printArea.style.display = 'none';
+            }, 1000);
+
+            closeReportModal();
+        };
+
+        // Cerrar modales al hacer clic fuera
+        window.onclick = function(event) {
+            const editModal = document.getElementById('editModal');
+            const reportModal = document.getElementById('reportModal');
+            
+            if (event.target == editModal) {
+                closeEditModal();
+            }
+            if (event.target == reportModal) {
+                closeReportModal();
+            }
+        };
 
         // Error handling
         window.addEventListener('error', function(e) {
