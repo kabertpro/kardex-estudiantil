@@ -1,9 +1,9 @@
-</html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kardex Estudiantil - Prof. Luis Miguel Kapa Escobar</title>
+    <title>Kardex Estudiantil - Sistema Unificado</title>
     <style>
         * {
             margin: 0;
@@ -46,13 +46,6 @@
             margin-bottom: 10px;
         }
 
-        .professor-name {
-            font-size: 1.1em;
-            opacity: 0.9;
-            font-style: italic;
-            margin-top: 15px;
-        }
-
         /* Panel de administración */
         .admin-section {
             background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
@@ -91,7 +84,7 @@
 
         .form-row {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
             gap: 15px;
             margin-bottom: 15px;
             align-items: end;
@@ -107,10 +100,16 @@
 
         .form-row-observation {
             display: grid;
-            grid-template-columns: 3fr 1fr;
+            grid-template-columns: 1fr;
             gap: 15px;
             margin-bottom: 15px;
-            align-items: end;
+        }
+
+        .form-row-filters {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
         .form-input, .form-select, .form-textarea {
@@ -139,7 +138,7 @@
 
         .parent-search {
             text-align: center;
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
         }
 
@@ -163,24 +162,29 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
+        .search-fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
         .initials-input {
             width: 100%;
-            max-width: 300px;
-            padding: 20px;
+            padding: 15px;
             border: 3px solid #e0e0e0;
-            border-radius: 15px;
-            font-size: 24px;
+            border-radius: 10px;
+            font-size: 20px;
             text-align: center;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 25px;
+            letter-spacing: 2px;
             font-weight: bold;
         }
 
         .initials-input:focus {
             outline: none;
             border-color: #4facfe;
-            box-shadow: 0 0 20px rgba(79, 172, 254, 0.4);
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.3);
         }
 
         .btn {
@@ -575,6 +579,13 @@
             color: #666;
         }
 
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 1.2em;
+        }
+
         .error {
             background: #f8d7da;
             color: #721c24;
@@ -601,31 +612,21 @@
 
             .container {
                 border-radius: 10px;
-                margin: 0;
             }
 
-            /* Header móvil */
             .header {
                 padding: 25px 15px;
-                text-align: center;
             }
 
             .header h1 {
                 font-size: 2em;
-                margin-bottom: 10px;
                 line-height: 1.2;
             }
 
             .header p {
                 font-size: 1em;
-                margin-bottom: 8px;
             }
 
-            .professor-name {
-                font-size: 0.9em;
-            }
-
-            /* Admin section móvil */
             .admin-section {
                 padding: 20px 15px;
             }
@@ -634,254 +635,64 @@
                 width: 100%;
                 max-width: none;
                 margin: 8px 0;
-                font-size: 16px; /* Evita zoom en iOS */
+                font-size: 16px;
             }
 
             .admin-panel {
                 padding: 20px 15px;
             }
 
-            /* Formularios móviles */
             .form-row, 
             .form-row-incident, 
-            .form-row-observation {
+            .form-row-observation,
+            .form-row-filters,
+            .search-fields {
                 grid-template-columns: 1fr;
                 gap: 12px;
-                margin-bottom: 20px;
             }
 
             .form-input, 
             .form-select, 
             .form-textarea {
                 padding: 12px 15px;
-                font-size: 16px; /* Evita zoom en iOS */
-                border-radius: 8px;
+                font-size: 16px;
                 width: 100%;
-                box-sizing: border-box;
             }
 
-            .form-textarea {
-                min-height: 80px;
-            }
-
-            /* Botones móviles */
             .btn {
                 width: 100%;
                 padding: 15px 20px;
                 font-size: 14px;
                 margin: 8px 0;
-                border-radius: 8px;
                 text-transform: none;
-                letter-spacing: 0.5px;
-                box-sizing: border-box;
             }
 
-            /* Herramientas admin móvil */
-            .admin-panel > div:last-child {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-                margin-top: 25px;
-            }
-
-            /* Sección padres móvil */
             .parent-section {
                 padding: 25px 15px;
             }
 
             .parent-search h2 {
                 font-size: 1.6em;
-                margin-bottom: 15px;
-            }
-
-            .parent-search p {
-                font-size: 0.95em;
-                margin-bottom: 20px;
-                line-height: 1.5;
             }
 
             .search-container {
                 padding: 20px 15px;
             }
 
-            .initials-input {
-                width: 100%;
-                max-width: none;
-                padding: 18px;
-                font-size: 20px;
-                letter-spacing: 2px;
-                margin-bottom: 20px;
-            }
-
-            .search-container .btn {
-                width: 100%;
-                padding: 18px;
-                font-size: 16px;
-            }
-
-            /* Resultados móviles */
             .results {
                 padding: 20px 15px;
             }
 
             .student-card {
                 padding: 20px 15px;
-                margin-bottom: 20px;
-                border-radius: 10px;
-            }
-
-            .student-header {
-                margin-bottom: 20px;
-                padding-bottom: 15px;
             }
 
             .student-name {
                 font-size: 1.5em;
-                line-height: 1.3;
-                margin-bottom: 8px;
             }
 
-            .student-id {
-                font-size: 1em;
-            }
-
-            .status-badge {
-                padding: 10px 20px;
-                font-size: 14px;
-                margin-top: 12px;
-                border-radius: 20px;
-                display: inline-block;
-                width: auto;
-            }
-
-            /* Grid de materias móvil */
             .subjects-grid {
                 grid-template-columns: 1fr;
-                gap: 15px;
-                margin-top: 15px;
-            }
-
-            .subject-card {
-                padding: 15px;
-            }
-
-            .subject-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
-
-            .subject-name {
-                font-size: 1.1em;
-            }
-
-            .subject-status {
-                align-self: flex-start;
-            }
-
-            /* Incidencias móvil */
-            .incident-item {
-                padding: 12px;
-                margin: 8px 0;
-                border-radius: 8px;
-            }
-
-            .incident-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 6px;
-            }
-
-            .incident-date-day {
-                font-size: 0.85em;
-            }
-
-            .incident-type {
-                padding: 6px 12px;
-                font-size: 0.8em;
-                align-self: flex-start;
-            }
-
-            .incident-observation {
-                font-size: 0.85em;
-                margin-top: 8px;
-                line-height: 1.4;
-            }
-
-            /* Loading y mensajes móvil */
-            .loading {
-                padding: 30px 15px;
-                font-size: 1em;
-            }
-
-            .loading div {
-                font-size: 2.5em !important;
-                margin-bottom: 15px !important;
-            }
-
-            .error, .no-data {
-                padding: 20px 15px;
-                margin: 15px 0;
-                font-size: 0.95em;
-                line-height: 1.5;
-            }
-
-            .no-data h3 {
-                font-size: 1.3em;
-                margin-bottom: 12px;
-            }
-        }
-
-        /* Extra small mobile devices */
-        @media (max-width: 480px) {
-            .header h1 {
-                font-size: 1.8em;
-            }
-
-            .header p {
-                font-size: 0.9em;
-            }
-
-            .professor-name {
-                font-size: 0.8em;
-            }
-
-            .parent-search h2 {
-                font-size: 1.4em;
-            }
-
-            .student-name {
-                font-size: 1.3em;
-            }
-
-            .subject-name {
-                font-size: 1em;
-            }
-
-            .initials-input {
-                font-size: 18px;
-                padding: 16px;
-            }
-        }
-
-        /* Landscape mobile orientation */
-        @media (max-width: 768px) and (orientation: landscape) {
-            .header {
-                padding: 20px 15px;
-            }
-
-            .header h1 {
-                font-size: 1.8em;
-            }
-
-            .admin-section, 
-            .parent-section, 
-            .results {
-                padding: 20px 15px;
-            }
-
-            .student-card {
-                padding: 15px;
             }
         }
 
@@ -892,7 +703,7 @@
             .form-textarea,
             .admin-input,
             .initials-input {
-                font-size: 16px; /* Prevents zoom */
+                font-size: 16px;
                 -webkit-appearance: none;
                 border-radius: 8px;
             }
@@ -904,8 +715,7 @@
         <!-- Header -->
         <div class="header">
             <h1>🎓 Kardex Estudiantil</h1>
-            <p>Sistema de seguimiento académico personalizado</p>
-            <div class="professor-name">Prof. Luis Miguel Kapa Escobar</div>
+            <p>Sistema de seguimiento académico unificado</p>
         </div>
 
         <!-- Panel de Administración -->
@@ -919,11 +729,24 @@
             <div id="adminPanel" class="admin-panel">
                 <h3>Panel de Administración</h3>
                 
+                <!-- Filtros de búsqueda -->
+                <h4>🔍 Filtros de Búsqueda</h4>
+                <div class="form-row-filters">
+                    <select id="filterCourse" class="form-select">
+                        <option value="">Todos los cursos</option>
+                    </select>
+                    <input type="text" id="filterName" class="form-input" placeholder="Buscar por nombre...">
+                    <button class="btn btn-primary" onclick="filterStudents()">🔍 Buscar</button>
+                </div>
+                
                 <!-- Agregar Estudiante -->
                 <h4>➕ Agregar Estudiante</h4>
                 <div class="form-row">
                     <input type="text" id="studentName" class="form-input" placeholder="Nombre completo">
                     <input type="text" id="studentInitials" class="form-input" placeholder="Iniciales (ABID)" style="text-transform: uppercase;">
+                    <select id="studentCourse" class="form-select">
+                        <option value="">Seleccionar curso...</option>
+                    </select>
                     <input type="email" id="parentEmail" class="form-input" placeholder="Email del padre/madre">
                     <button class="btn btn-success" onclick="addStudent()">Agregar</button>
                 </div>
@@ -957,7 +780,7 @@
                         <option value="Disrupción en clase">Disrupción en clase</option>
                         <option value="No participó">No participó</option>
                     </select>
-                    <input type="date" id="incidentDate" class="form-input" style="text-align: center;">
+                    <input type="date" id="incidentDate" class="form-input">
                     <button class="btn btn-danger" onclick="addIncident()">Registrar</button>
                 </div>
 
@@ -980,12 +803,15 @@
         <div class="parent-section">
             <div class="parent-search">
                 <h2>👨‍👩‍👧‍👦 Consulta para Padres</h2>
-                <p>Ingrese las <strong>iniciales</strong> de su hijo/hija para consultar su estado académico.<br>
-                <small>Ejemplo: Si su hijo es "Ana Beatriz García López", ingrese: <strong>ABGL</strong></small></p>
+                <p>Ingrese las <strong>iniciales</strong> y seleccione el <strong>curso</strong> de su hijo/hija para consultar su estado académico.</p>
                 
                 <div class="search-container">
-                    <input type="text" id="studentInitialsSearch" class="initials-input" placeholder="ABCD" maxlength="6" onkeypress="if(event.key==='Enter') searchByInitials()">
-                    <br>
+                    <div class="search-fields">
+                        <input type="text" id="studentInitialsSearch" class="initials-input" placeholder="Iniciales (ej: ABGL)" maxlength="6" onkeypress="if(event.key==='Enter') searchByInitials()">
+                        <select id="parentCourseSearch" class="form-select" style="padding: 15px;">
+                            <option value="">Seleccionar curso...</option>
+                        </select>
+                    </div>
                     <button class="btn btn-primary" onclick="searchByInitials()">🔍 Consultar Estado</button>
                 </div>
             </div>
@@ -1001,8 +827,7 @@
                 <div class="no-data">
                     <h3>📋 Sistema de Kardex</h3>
                     <p>Los administradores pueden agregar estudiantes e incidencias.<br>
-                    Los padres pueden consultar el estado de sus hijos usando las iniciales de sus nombres.</p>
-                    <p><strong>Profesor responsable:</strong> Prof. Luis Miguel Kapa Escobar</p>
+                    Los padres pueden consultar el estado de sus hijos usando las iniciales de sus nombres y seleccionando el curso.</p>
                 </div>
             </div>
         </div>
@@ -1056,6 +881,8 @@
                 </div>
 
                 <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">
+				<div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px; font-weight: bold;">Observación:</label>
                     <textarea id="editObservation" class="form-textarea" style="width: 100%;"></textarea>
                 </div>
@@ -1097,11 +924,9 @@
 
     <!-- Firebase SDK -->
     <script type="module">
-        // Import Firebase
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getFirestore, collection, addDoc, getDocs, query, where, orderBy, doc, deleteDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBWGEef6kjBbe94x-kiERiwNZEK5qUdAxs",
             authDomain: "kardex-estudiantil-2s.firebaseapp.com",
@@ -1111,7 +936,6 @@
             appId: "1:230074248197:web:a18aebafabd9574f3c006c"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
@@ -1120,7 +944,23 @@
         const ADMIN_PASSWORD = "kabert2000";
         let currentStudentForReport = null;
         let currentIncidentForEdit = null;
-        let allIncidentsData = []; // Nueva contraseña
+        
+        // Lista de cursos
+        const COURSES = [
+            "1ro de Primaria",
+            "2do de Primaria",
+            "3ro de Primaria",
+            "4to de Primaria",
+            "5to A de Primaria",
+            "5to B de Primaria",
+            "6to de Primaria",
+            "1ro de Secundaria",
+            "2do de Secundaria",
+            "3ro de Secundaria",
+            "4to de Secundaria",
+            "5to de Secundaria",
+            "6to de Secundaria"
+        ];
 
         // Make functions globally available
         window.db = db;
@@ -1134,21 +974,44 @@
         window.deleteDoc = deleteDoc;
         window.updateDoc = updateDoc;
 
+        // Populate course selects
+        function populateCourseSelects() {
+            const selects = ['studentCourse', 'filterCourse', 'parentCourseSearch'];
+            selects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                COURSES.forEach(course => {
+                    const option = document.createElement('option');
+                    option.value = course;
+                    option.textContent = course;
+                    select.appendChild(option);
+                });
+            });
+        }
+
         // Check admin access
         window.checkAdminAccess = function() {
             const password = document.getElementById('adminPassword').value;
+            
             if (password === ADMIN_PASSWORD) {
                 isAdminLoggedIn = true;
                 document.getElementById('adminPanel').style.display = 'block';
                 document.getElementById('adminPassword').style.display = 'none';
-                loadStudentsForSelect();
+                
+                const teacherInfo = document.createElement('div');
+                teacherInfo.style.cssText = 'background: #d4edda; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center;';
+                teacherInfo.innerHTML = '<strong>✅ Sesión de administrador iniciada</strong><br>Acceso a todos los cursos';
+                
+                const adminPanel = document.getElementById('adminPanel');
+                adminPanel.insertBefore(teacherInfo, adminPanel.firstChild);
+                
+                loadAllStudentsForSelect();
                 alert('✅ Acceso de administrador concedido');
             } else if (password.length > 0) {
                 alert('❌ Clave de administrador incorrecta');
             }
         };
 
-        // Add student to Firebase
+        // Add student
         window.addStudent = async function() {
             if (!isAdminLoggedIn) {
                 alert('❌ Acceso denegado');
@@ -1157,10 +1020,11 @@
 
             const name = document.getElementById('studentName').value.trim();
             const initials = document.getElementById('studentInitials').value.trim().toUpperCase();
+            const course = document.getElementById('studentCourse').value;
             const email = document.getElementById('parentEmail').value.trim().toLowerCase();
 
-            if (!name || !initials) {
-                alert('❌ Complete el nombre e iniciales');
+            if (!name || !initials || !course) {
+                alert('❌ Complete todos los campos obligatorios (nombre, iniciales y curso)');
                 return;
             }
 
@@ -1172,33 +1036,32 @@
             showLoading(true);
 
             try {
-                // Check if initials already exist
                 const studentsRef = collection(db, 'students');
-                const q = query(studentsRef, where('initials', '==', initials));
+                const q = query(studentsRef, where('initials', '==', initials), where('course', '==', course));
                 const querySnapshot = await getDocs(q);
 
                 if (!querySnapshot.empty) {
-                    alert('❌ Ya existe un estudiante con esas iniciales');
+                    alert('❌ Ya existe un estudiante con esas iniciales en este curso');
                     showLoading(false);
                     return;
                 }
 
-                // Add student
                 await addDoc(collection(db, 'students'), {
                     name: name,
                     initials: initials,
                     parentEmail: email,
+                    course: course,
                     dateAdded: new Date().toISOString(),
                     createdAt: new Date()
                 });
 
-                // Clear form
                 document.getElementById('studentName').value = '';
                 document.getElementById('studentInitials').value = '';
+                document.getElementById('studentCourse').value = '';
                 document.getElementById('parentEmail').value = '';
 
                 alert('✅ Estudiante agregado correctamente');
-                loadStudentsForSelect();
+                loadAllStudentsForSelect();
                 
             } catch (error) {
                 console.error('Error adding student:', error);
@@ -1208,7 +1071,7 @@
             showLoading(false);
         };
 
-        // Add incident to Firebase
+        // Add incident
         window.addIncident = async function() {
             if (!isAdminLoggedIn) {
                 alert('❌ Acceso denegado');
@@ -1231,7 +1094,6 @@
                 return;
             }
 
-            // Calcular el día de la semana desde la fecha seleccionada
             const dateObj = new Date(selectedDate + 'T00:00:00');
             const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
             const dayOfWeek = days[dateObj.getDay()];
@@ -1249,9 +1111,7 @@
                     createdAt: new Date()
                 });
 
-                // Clear observation field
                 document.getElementById('incidentObservation').value = '';
-                
                 alert('✅ Incidencia registrada');
                 
             } catch (error) {
@@ -1262,16 +1122,32 @@
             showLoading(false);
         };
 
-        // Load students for select dropdown
-        window.loadStudentsForSelect = async function() {
+        // Load all students for select
+        window.loadAllStudentsForSelect = async function() {
             try {
                 const querySnapshot = await getDocs(collection(db, 'students'));
                 const select = document.getElementById('incidentStudent');
                 select.innerHTML = '<option value="">Seleccionar estudiante...</option>';
 
+                const studentsByCourse = {};
                 querySnapshot.forEach((doc) => {
                     const student = doc.data();
-                    select.innerHTML += `<option value="${doc.id}">${student.name} (${student.initials})</option>`;
+                    if (!studentsByCourse[student.course]) {
+                        studentsByCourse[student.course] = [];
+                    }
+                    studentsByCourse[student.course].push({ id: doc.id, ...student });
+                });
+
+                Object.keys(studentsByCourse).sort().forEach(course => {
+                    const optgroup = document.createElement('optgroup');
+                    optgroup.label = course;
+                    studentsByCourse[course].forEach(student => {
+                        const option = document.createElement('option');
+                        option.value = student.id;
+                        option.textContent = `${student.name} (${student.initials})`;
+                        optgroup.appendChild(option);
+                    });
+                    select.appendChild(optgroup);
                 });
             } catch (error) {
                 console.error('Error loading students:', error);
@@ -1281,9 +1157,15 @@
         // Search by initials (for parents)
         window.searchByInitials = async function() {
             const initials = document.getElementById('studentInitialsSearch').value.trim().toUpperCase();
+            const course = document.getElementById('parentCourseSearch').value;
             
             if (!initials) {
                 alert('❌ Ingrese las iniciales del estudiante');
+                return;
+            }
+
+            if (!course) {
+                alert('❌ Seleccione el curso');
                 return;
             }
 
@@ -1295,13 +1177,12 @@
             showLoading(true);
 
             try {
-                // Find student by initials
                 const studentsRef = collection(db, 'students');
-                const q = query(studentsRef, where('initials', '==', initials));
+                const q = query(studentsRef, where('initials', '==', initials), where('course', '==', course));
                 const studentSnapshot = await getDocs(q);
 
                 if (studentSnapshot.empty) {
-                    showError('❌ No se encontró ningún estudiante con esas iniciales');
+                    showError('❌ No se encontró ningún estudiante con esas iniciales en el curso seleccionado');
                     showLoading(false);
                     return;
                 }
@@ -1309,7 +1190,6 @@
                 const studentDoc = studentSnapshot.docs[0];
                 const student = { id: studentDoc.id, ...studentDoc.data() };
 
-                // Get incidents for this student
                 const incidentsRef = collection(db, 'incidents');
                 const incidentsQuery = query(incidentsRef, where('studentId', '==', student.id), orderBy('createdAt', 'desc'));
                 const incidentsSnapshot = await getDocs(incidentsQuery);
@@ -1329,7 +1209,58 @@
             showLoading(false);
         };
 
-        // Load all students (admin only)
+        // Filter students (admin)
+        window.filterStudents = async function() {
+            if (!isAdminLoggedIn) {
+                alert('❌ Acceso denegado');
+                return;
+            }
+
+            const course = document.getElementById('filterCourse').value;
+            const nameFilter = document.getElementById('filterName').value.trim().toLowerCase();
+
+            showLoading(true);
+
+            try {
+                let studentsQuery;
+                if (course) {
+                    studentsQuery = query(collection(db, 'students'), where('course', '==', course));
+                } else {
+                    studentsQuery = collection(db, 'students');
+                }
+
+                const studentsSnapshot = await getDocs(studentsQuery);
+                const students = [];
+
+                for (const doc of studentsSnapshot.docs) {
+                    const student = { id: doc.id, ...doc.data() };
+                    
+                    if (nameFilter && !student.name.toLowerCase().includes(nameFilter)) {
+                        continue;
+                    }
+
+                    const incidentsQuery = query(collection(db, 'incidents'), where('studentId', '==', student.id), orderBy('createdAt', 'desc'));
+                    const incidentsSnapshot = await getDocs(incidentsQuery);
+                    
+                    const incidents = [];
+                    incidentsSnapshot.forEach((incDoc) => {
+                        incidents.push({ id: incDoc.id, ...incDoc.data() });
+                    });
+
+                    students.push({ ...student, incidents });
+                }
+
+                displayStudentResults(students);
+                
+            } catch (error) {
+                console.error('Error filtering students:', error);
+                showError('❌ Error al filtrar estudiantes: ' + error.message);
+            }
+
+            showLoading(false);
+        };
+
+        // Load all students (admin)
         window.loadAllStudentsAdmin = async function() {
             if (!isAdminLoggedIn) {
                 alert('❌ Acceso denegado');
@@ -1345,7 +1276,6 @@
                 for (const doc of studentsSnapshot.docs) {
                     const student = { id: doc.id, ...doc.data() };
                     
-                    // Get incidents for this student
                     const incidentsQuery = query(collection(db, 'incidents'), where('studentId', '==', student.id), orderBy('createdAt', 'desc'));
                     const incidentsSnapshot = await getDocs(incidentsQuery);
                     
@@ -1374,9 +1304,8 @@
             if (students.length === 0) {
                 container.innerHTML = `
                     <div class="no-data">
-                        <h3>❌ No hay estudiantes registrados</h3>
-                        <p>El administrador debe agregar estudiantes primero.</p>
-                        <p><strong>Profesor responsable:</strong> Prof. Luis Miguel Kapa Escobar</p>
+                        <h3>❌ No se encontraron estudiantes</h3>
+                        <p>Intente con otros criterios de búsqueda.</p>
                     </div>
                 `;
                 return;
@@ -1393,6 +1322,7 @@
                         <div class="student-header">
                             <div class="student-name">👤 ${student.name}</div>
                             <div class="student-id">🏷️ Código: ${student.initials}</div>
+                            <div class="student-id">📚 Curso: ${student.course || 'N/A'}</div>
                             <div class="status-badge ${overallStatus.class}">${overallStatus.text}</div>
                         </div>
 
@@ -1416,8 +1346,8 @@
                             
                             ${data.incidents.length > 0 ? `
                                 <div class="incidents-list">
-                                    ${data.incidents.map((inc, index) => `
-                                        <div class="incident-item" data-incident-id="${inc.id || ''}">
+                                    ${data.incidents.map((inc) => `
+                                        <div class="incident-item">
                                             <div class="incident-header">
                                                 <span class="incident-date-day">📅 ${inc.date} - ${inc.day || 'N/A'}</span>
                                                 <span class="incident-type">${inc.type}</span>
@@ -1446,6 +1376,7 @@
                         ${isAdminLoggedIn ? `
                             <div class="admin-actions no-print">
                                 <button class="btn btn-primary" onclick='openReportModal(${JSON.stringify(student).replace(/'/g, "&apos;")})'>📄 Generar Reporte</button>
+                                <button class="btn btn-success" onclick='editStudent(${JSON.stringify(student).replace(/'/g, "&apos;")})'>✏️ Editar Estudiante</button>
                                 <button class="btn btn-danger" onclick='deleteStudent("${student.id}", "${student.name}")'>🗑️ Eliminar Estudiante</button>
                             </div>
                         ` : ''}
@@ -1456,7 +1387,6 @@
             container.innerHTML = html;
         };
 
-        // Get subject summary
         function getSubjectSummary(incidents) {
             const subjects = [
                 'Matemáticas', 'Lenguaje', 'Psicología-Filosofía', 'Biología-Geografía',
@@ -1474,7 +1404,6 @@
             return summary;
         }
 
-        // Get overall status
         function getOverallStatus(subjectSummary) {
             const totalIncidents = Object.values(subjectSummary).reduce((total, subject) => total + subject.incidents.length, 0);
 
@@ -1484,7 +1413,6 @@
             return { class: 'status-critical', text: '🚨 Crítico' };
         }
 
-        // Utility functions
         window.showLoading = function(show) {
             document.getElementById('loadingIndicator').style.display = show ? 'block' : 'none';
         };
@@ -1493,217 +1421,17 @@
             document.getElementById('resultsContainer').innerHTML = `<div class="error"><h3>${message}</h3></div>`;
         };
 
-        // Export data
-        window.exportData = async function() {
-            if (!isAdminLoggedIn) {
-                alert('❌ Acceso denegado');
-                return;
-            }
-
-            showLoading(true);
-            
-            try {
-                // Get all students
-                const studentsSnapshot = await getDocs(collection(db, 'students'));
-                const students = [];
-                studentsSnapshot.forEach((doc) => {
-                    students.push({ id: doc.id, ...doc.data() });
-                });
-
-                // Get all incidents
-                const incidentsSnapshot = await getDocs(collection(db, 'incidents'));
-                const incidents = [];
-                incidentsSnapshot.forEach((doc) => {
-                    incidents.push({ id: doc.id, ...doc.data() });
-                });
-
-                const exportData = {
-                    students: students,
-                    incidents: incidents,
-                    exportDate: new Date().toISOString(),
-                    professor: "Prof. Luis Miguel Kapa Escobar"
-                };
-
-                const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `kardex_backup_${new Date().toISOString().split('T')[0]}.json`;
-                a.click();
-                URL.revokeObjectURL(url);
-
-                alert('✅ Datos exportados correctamente');
-
-            } catch (error) {
-                console.error('Export error:', error);
-                alert('❌ Error al exportar: ' + error.message);
-            }
-
-            showLoading(false);
-        };
-
-        // Import data
-        window.importData = async function(event) {
-            if (!isAdminLoggedIn) {
-                alert('❌ Acceso denegado');
-                return;
-            }
-
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = async function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    
-                    if (!data.students || !Array.isArray(data.students)) {
-                        alert('❌ Formato de archivo inválido');
-                        return;
-                    }
-
-                    showLoading(true);
-
-                    let addedStudents = 0;
-                    let addedIncidents = 0;
-
-                    // Import students
-                    for (const student of data.students) {
-                        try {
-                            const studentData = {
-                                name: student.name || 'Nombre no disponible',
-                                initials: student.initials || student.id || 'XXXX',
-                                parentEmail: student.parentEmail || student.email || '',
-                                course: student.course || '',
-                                dateAdded: new Date().toISOString(),
-                                createdAt: new Date()
-                            };
-
-                            // Check if initials already exist
-                            const existingQuery = query(collection(db, 'students'), where('initials', '==', studentData.initials));
-                            const existingSnapshot = await getDocs(existingQuery);
-
-                            if (existingSnapshot.empty) {
-                                await addDoc(collection(db, 'students'), studentData);
-                                addedStudents++;
-                            }
-                        } catch (error) {
-                            console.warn('Error importing student:', student.name, error);
-                        }
-                    }
-
-                    // Import incidents if available
-                    if (data.incidents && Array.isArray(data.incidents)) {
-                        for (const incident of data.incidents) {
-                            try {
-                                await addDoc(collection(db, 'incidents'), {
-                                    studentId: incident.studentId,
-                                    subject: incident.subject || 'General',
-                                    type: incident.type || 'Incidencia general',
-                                    day: incident.day || 'N/A',
-                                    observation: incident.observation || '',
-                                    date: incident.date || new Date().toISOString().split('T')[0],
-                                    createdAt: new Date()
-                                });
-                                addedIncidents++;
-                            } catch (error) {
-                                console.warn('Error importing incident:', error);
-                            }
-                        }
-                    }
-
-                    alert(`✅ Importación completa:\n${addedStudents} estudiantes agregados\n${addedIncidents} incidencias agregadas`);
-                    loadStudentsForSelect();
-                    
-                } catch (error) {
-                    console.error('Import error:', error);
-                    alert('❌ Error al importar archivo: ' + error.message);
-                }
-
-                showLoading(false);
-                event.target.value = ''; // Reset file input
-            };
-            
-            reader.readAsText(file);
-        };
-
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            // Auto-uppercase for initials inputs
-            document.getElementById('studentInitials').addEventListener('input', function(e) {
-                e.target.value = e.target.value.toUpperCase();
-            });
-            
-            document.getElementById('studentInitialsSearch').addEventListener('input', function(e) {
-                e.target.value = e.target.value.toUpperCase();
-            });
-
-            // Set default date to today
-            const today = new Date();
-            const dateInput = document.getElementById('incidentDate');
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const day = String(today.getDate()).padStart(2, '0');
-            dateInput.value = `${year}-${month}-${day}`;
-
-            // Welcome message
-            console.log('🔥 Firebase Kardex System loaded successfully!');
-            console.log('👨‍🏫 Profesor: Luis Miguel Kapa Escobar');
-        });
-
-        // Error handling
-        window.addEventListener('error', function(e) {
-            console.error('Global error:', e.error);
-            if (e.error && e.error.message && e.error.message.includes('Firebase')) {
-                alert('⚠️ Error de conexión con Firebase. Verifique su conexión a internet.');
-            }
-        });
-
-
-
-
-       // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            // Auto-uppercase for initials inputs
-            document.getElementById('studentInitials').addEventListener('input', function(e) {
-                e.target.value = e.target.value.toUpperCase();
-            });
-            
-            document.getElementById('studentInitialsSearch').addEventListener('input', function(e) {
-                e.target.value = e.target.value.toUpperCase();
-            });
-
-            // Set default date to today
-            const today = new Date();
-            const dateInput = document.getElementById('incidentDate');
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const day = String(today.getDate()).padStart(2, '0');
-            dateInput.value = `${year}-${month}-${day}`;
-
-            // Welcome message
-            console.log('🔥 Firebase Kardex System loaded successfully!');
-            console.log('👨‍🏫 Profesor: Luis Miguel Kapa Escobar');
-        });
-
-        // ============= NUEVAS FUNCIONES =============
-
-        // Editar incidencia
+        // Edit incident
         window.editIncident = function(incident) {
-            if (!isAdminLoggedIn) {
-                alert('❌ Acceso denegado');
-                return;
-            }
+            if (!isAdminLoggedIn) return;
 
             currentIncidentForEdit = incident;
-            
             document.getElementById('editIncidentId').value = incident.id;
             document.getElementById('editStudentId').value = incident.studentId;
             document.getElementById('editSubject').value = incident.subject;
             document.getElementById('editType').value = incident.type;
             document.getElementById('editDate').value = incident.date;
             document.getElementById('editObservation').value = incident.observation || '';
-            
             document.getElementById('editModal').style.display = 'block';
         };
 
@@ -1713,10 +1441,7 @@
         };
 
         window.saveEditIncident = async function() {
-            if (!isAdminLoggedIn) {
-                alert('❌ Acceso denegado');
-                return;
-            }
+            if (!isAdminLoggedIn) return;
 
             const incidentId = document.getElementById('editIncidentId').value;
             const subject = document.getElementById('editSubject').value;
@@ -1724,7 +1449,6 @@
             const selectedDate = document.getElementById('editDate').value;
             const observation = document.getElementById('editObservation').value.trim();
 
-            // Calcular día de la semana
             const dateObj = new Date(selectedDate + 'T00:00:00');
             const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
             const dayOfWeek = days[dateObj.getDay()];
@@ -1741,67 +1465,43 @@
                     observation: observation
                 });
 
-                alert('✅ Incidencia actualizada correctamente');
+                alert('✅ Incidencia actualizada');
                 closeEditModal();
-                
-                // Recargar datos
-                if (isAdminLoggedIn) {
-                    loadAllStudentsAdmin();
-                }
+                loadAllStudentsAdmin();
                 
             } catch (error) {
                 console.error('Error updating incident:', error);
-                alert('❌ Error al actualizar incidencia: ' + error.message);
+                alert('❌ Error al actualizar: ' + error.message);
             }
 
             showLoading(false);
         };
 
-        // Eliminar incidencia
+        // Delete incident
         window.deleteIncident = async function(incidentId, studentId) {
-            if (!isAdminLoggedIn) {
-                alert('❌ Acceso denegado');
-                return;
-            }
-
-            if (!confirm('¿Está seguro de eliminar esta incidencia?')) {
-                return;
-            }
+            if (!isAdminLoggedIn || !confirm('¿Eliminar esta incidencia?')) return;
 
             showLoading(true);
 
             try {
                 await deleteDoc(doc(db, 'incidents', incidentId));
                 alert('✅ Incidencia eliminada');
-                
-                // Recargar datos
-                if (isAdminLoggedIn) {
-                    loadAllStudentsAdmin();
-                }
-                
+                loadAllStudentsAdmin();
             } catch (error) {
                 console.error('Error deleting incident:', error);
-                alert('❌ Error al eliminar incidencia: ' + error.message);
+                alert('❌ Error al eliminar: ' + error.message);
             }
 
             showLoading(false);
         };
 
-        // Eliminar estudiante
+        // Delete student
         window.deleteStudent = async function(studentId, studentName) {
-            if (!isAdminLoggedIn) {
-                alert('❌ Acceso denegado');
-                return;
-            }
-
-            if (!confirm(`¿Está seguro de eliminar al estudiante "${studentName}" y todas sus incidencias? Esta acción no se puede deshacer.`)) {
-                return;
-            }
+            if (!isAdminLoggedIn || !confirm(`¿Eliminar "${studentName}" y todas sus incidencias?`)) return;
 
             showLoading(true);
 
             try {
-                // Eliminar todas las incidencias del estudiante
                 const incidentsQuery = query(collection(db, 'incidents'), where('studentId', '==', studentId));
                 const incidentsSnapshot = await getDocs(incidentsQuery);
                 
@@ -1811,34 +1511,26 @@
                 });
                 
                 await Promise.all(deletePromises);
-                
-                // Eliminar el estudiante
                 await deleteDoc(doc(db, 'students', studentId));
                 
-                alert('✅ Estudiante y sus incidencias eliminados correctamente');
-                
-                // Recargar datos
+                alert('✅ Estudiante eliminado');
                 loadAllStudentsAdmin();
-                loadStudentsForSelect();
+                loadAllStudentsForSelect();
                 
             } catch (error) {
                 console.error('Error deleting student:', error);
-                alert('❌ Error al eliminar estudiante: ' + error.message);
+                alert('❌ Error al eliminar: ' + error.message);
             }
 
             showLoading(false);
         };
 
-        // Abrir modal de reporte
+        // Report functions
         window.openReportModal = function(student) {
-            if (!isAdminLoggedIn) {
-                alert('❌ Acceso denegado');
-                return;
-            }
+            if (!isAdminLoggedIn) return;
 
             currentStudentForReport = student;
             
-            // Crear checkboxes de materias
             const subjects = [
                 'Matemáticas', 'Lenguaje', 'Psicología-Filosofía', 'Biología-Geografía',
                 'Ciencias Sociales', 'Inglés', 'Tecnología', 'Educación Física',
@@ -1868,8 +1560,7 @@
         };
 
         window.toggleAllSubjects = function(checkbox) {
-            const allCheckboxes = document.querySelectorAll('.subject-checkbox');
-            allCheckboxes.forEach(cb => {
+            document.querySelectorAll('.subject-checkbox').forEach(cb => {
                 cb.checked = checkbox.checked;
             });
         };
@@ -1877,30 +1568,27 @@
         window.generateReport = function() {
             if (!currentStudentForReport) return;
 
-            const selectedSubjects = Array.from(document.querySelectorAll('.subject-checkbox:checked'))
-                .map(cb => cb.value);
+            const selectedSubjects = Array.from(document.querySelectorAll('.subject-checkbox:checked')).map(cb => cb.value);
 
             if (selectedSubjects.length === 0) {
                 alert('❌ Seleccione al menos una materia');
                 return;
             }
 
-            // Filtrar incidencias por materias seleccionadas
             const filteredIncidents = (currentStudentForReport.incidents || [])
                 .filter(inc => selectedSubjects.includes(inc.subject))
-                .sort((a, b) => new Date(a.date) - new Date(b.date)); // Ordenar por fecha ascendente
+                .sort((a, b) => new Date(a.date) - new Date(b.date));
 
             if (filteredIncidents.length === 0) {
-                alert('ℹ️ No hay incidencias registradas para las materias seleccionadas');
+                alert('ℹ️ No hay incidencias registradas');
                 return;
             }
 
-            // Generar HTML del reporte
             const reportHTML = `
                 <div class="print-report">
                     <div class="report-header">
                         <h1 class="report-title">📋 Reporte de Incidencias</h1>
-                        <p><strong>Prof. Luis Miguel Kapa Escobar</strong></p>
+                        <p><strong>Sistema Kardex Estudiantil</strong></p>
                         <p>Fecha de emisión: ${new Date().toLocaleDateString('es-ES')}</p>
                     </div>
 
@@ -1908,6 +1596,7 @@
                         <h2>👤 Información del Estudiante</h2>
                         <p><strong>Nombre:</strong> ${currentStudentForReport.name}</p>
                         <p><strong>Código:</strong> ${currentStudentForReport.initials}</p>
+                        <p><strong>Curso:</strong> ${currentStudentForReport.course || 'N/A'}</p>
                         <p><strong>Total de incidencias:</strong> ${filteredIncidents.length}</p>
                         <p><strong>Materias incluidas:</strong> ${selectedSubjects.join(', ')}</p>
                     </div>
@@ -1940,9 +1629,8 @@
 
                     <div class="report-footer">
                         <p>Este reporte es un documento oficial del sistema Kardex Estudiantil</p>
-                        <p><strong>Prof. Luis Miguel Kapa Escobar</strong></p>
                         <p>_______________________</p>
-                        <p>Firma</p>
+                        <p>Firma del Profesor/a</p>
                     </div>
                 </div>
             `;
@@ -1951,10 +1639,8 @@
             printArea.innerHTML = reportHTML;
             printArea.style.display = 'block';
 
-            // Imprimir
             window.print();
 
-            // Ocultar área de impresión después de imprimir
             setTimeout(() => {
                 printArea.style.display = 'none';
             }, 1000);
@@ -1962,10 +1648,132 @@
             closeReportModal();
         };
 
-        // Cerrar modales al hacer clic fuera
+        // Export/Import
+        window.exportData = async function() {
+            if (!isAdminLoggedIn) return;
+
+            showLoading(true);
+            
+            try {
+                const studentsSnapshot = await getDocs(collection(db, 'students'));
+                const students = [];
+                studentsSnapshot.forEach((doc) => {
+                    students.push({ id: doc.id, ...doc.data() });
+                });
+
+                const incidentsSnapshot = await getDocs(collection(db, 'incidents'));
+                const incidents = [];
+                incidentsSnapshot.forEach((doc) => {
+                    incidents.push({ id: doc.id, ...doc.data() });
+                });
+
+                const exportData = {
+                    students: students,
+                    incidents: incidents,
+                    exportDate: new Date().toISOString()
+                };
+
+                const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `kardex_backup_${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+
+                alert('✅ Datos exportados correctamente');
+
+            } catch (error) {
+                console.error('Export error:', error);
+                alert('❌ Error al exportar: ' + error.message);
+            }
+
+            showLoading(false);
+        };
+
+        window.importData = async function(event) {
+            if (!isAdminLoggedIn) return;
+
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (!data.students || !Array.isArray(data.students)) {
+                        alert('❌ Formato de archivo inválido');
+                        return;
+                    }
+
+                    showLoading(true);
+
+                    let addedStudents = 0;
+                    let addedIncidents = 0;
+
+                    for (const student of data.students) {
+                        try {
+                            const studentData = {
+                                name: student.name || 'Nombre no disponible',
+                                initials: student.initials || student.id || 'XXXX',
+                                parentEmail: student.parentEmail || student.email || '',
+                                course: student.course || '',
+                                dateAdded: new Date().toISOString(),
+                                createdAt: new Date()
+                            };
+
+                            const existingQuery = query(collection(db, 'students'), where('initials', '==', studentData.initials), where('course', '==', studentData.course));
+                            const existingSnapshot = await getDocs(existingQuery);
+
+                            if (existingSnapshot.empty) {
+                                await addDoc(collection(db, 'students'), studentData);
+                                addedStudents++;
+                            }
+                        } catch (error) {
+                            console.warn('Error importing student:', student.name, error);
+                        }
+                    }
+
+                    if (data.incidents && Array.isArray(data.incidents)) {
+                        for (const incident of data.incidents) {
+                            try {
+                                await addDoc(collection(db, 'incidents'), {
+                                    studentId: incident.studentId,
+                                    subject: incident.subject || 'General',
+                                    type: incident.type || 'Incidencia general',
+                                    day: incident.day || 'N/A',
+                                    observation: incident.observation || '',
+                                    date: incident.date || new Date().toISOString().split('T')[0],
+                                    createdAt: new Date()
+                                });
+                                addedIncidents++;
+                            } catch (error) {
+                                console.warn('Error importing incident:', error);
+                            }
+                        }
+                    }
+
+                    alert(`✅ Importación completa:\n${addedStudents} estudiantes agregados\n${addedIncidents} incidencias agregadas`);
+                    loadAllStudentsForSelect();
+                    
+                } catch (error) {
+                    console.error('Import error:', error);
+                    alert('❌ Error al importar archivo: ' + error.message);
+                }
+
+                showLoading(false);
+                event.target.value = '';
+            };
+            
+            reader.readAsText(file);
+        };
+
+        // Close modals on outside click
         window.onclick = function(event) {
             const editModal = document.getElementById('editModal');
             const reportModal = document.getElementById('reportModal');
+            const editStudentModal = document.getElementById('editStudentModal');
             
             if (event.target == editModal) {
                 closeEditModal();
@@ -1973,9 +1781,124 @@
             if (event.target == reportModal) {
                 closeReportModal();
             }
+            if (event.target == editStudentModal) {
+                closeEditStudentModal();
+            }
         };
 
-        // Error handling
+        // Edit student functions
+        window.editStudent = function(student) {
+            if (!isAdminLoggedIn) return;
+
+            document.getElementById('editStudentId').value = student.id;
+            document.getElementById('editStudentName').value = student.name;
+            document.getElementById('editStudentInitials').value = student.initials;
+            document.getElementById('editStudentCourse').value = student.course;
+            document.getElementById('editStudentEmail').value = student.parentEmail || '';
+            
+            // Populate course dropdown
+            const select = document.getElementById('editStudentCourse');
+            select.innerHTML = '<option value="">Seleccionar curso...</option>';
+            COURSES.forEach(course => {
+                const option = document.createElement('option');
+                option.value = course;
+                option.textContent = course;
+                if (course === student.course) {
+                    option.selected = true;
+                }
+                select.appendChild(option);
+            });
+            
+            document.getElementById('editStudentModal').style.display = 'block';
+        };
+
+        window.closeEditStudentModal = function() {
+            document.getElementById('editStudentModal').style.display = 'none';
+        };
+
+        window.saveEditStudent = async function() {
+            if (!isAdminLoggedIn) return;
+
+            const studentId = document.getElementById('editStudentId').value;
+            const name = document.getElementById('editStudentName').value.trim();
+            const initials = document.getElementById('editStudentInitials').value.trim().toUpperCase();
+            const course = document.getElementById('editStudentCourse').value;
+            const email = document.getElementById('editStudentEmail').value.trim().toLowerCase();
+
+            if (!name || !initials || !course) {
+                alert('❌ Complete todos los campos obligatorios');
+                return;
+            }
+
+            if (!/^[A-Z]{2,6}$/.test(initials)) {
+                alert('❌ Las iniciales deben ser 2-6 letras mayúsculas');
+                return;
+            }
+
+            showLoading(true);
+
+            try {
+                // Check if new initials already exist in the same course (excluding current student)
+                const studentsRef = collection(db, 'students');
+                const q = query(studentsRef, where('initials', '==', initials), where('course', '==', course));
+                const querySnapshot = await getDocs(q);
+
+                let exists = false;
+                querySnapshot.forEach((doc) => {
+                    if (doc.id !== studentId) {
+                        exists = true;
+                    }
+                });
+
+                if (exists) {
+                    alert('❌ Ya existe otro estudiante con esas iniciales en este curso');
+                    showLoading(false);
+                    return;
+                }
+
+                const studentRef = doc(db, 'students', studentId);
+                await updateDoc(studentRef, {
+                    name: name,
+                    initials: initials,
+                    course: course,
+                    parentEmail: email
+                });
+
+                alert('✅ Estudiante actualizado correctamente');
+                closeEditStudentModal();
+                loadAllStudentsAdmin();
+                loadAllStudentsForSelect();
+                
+            } catch (error) {
+                console.error('Error updating student:', error);
+                alert('❌ Error al actualizar estudiante: ' + error.message);
+            }
+
+            showLoading(false);
+        };
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            populateCourseSelects();
+            
+            document.getElementById('studentInitials').addEventListener('input', function(e) {
+                e.target.value = e.target.value.toUpperCase();
+            });
+            
+            document.getElementById('studentInitialsSearch').addEventListener('input', function(e) {
+                e.target.value = e.target.value.toUpperCase();
+            });
+
+            const today = new Date();
+            const dateInput = document.getElementById('incidentDate');
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            dateInput.value = `${year}-${month}-${day}`;
+
+            console.log('🔥 Firebase Kardex System loaded successfully!');
+        });
+
         window.addEventListener('error', function(e) {
             console.error('Global error:', e.error);
             if (e.error && e.error.message && e.error.message.includes('Firebase')) {
