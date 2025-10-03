@@ -751,24 +751,28 @@
                     <button class="btn btn-success" onclick="addStudent()">Agregar</button>
                 </div>
 
+                <!-- Configurar Materias por Curso -->
+                <h4 style="margin-top: 25px;">📚 Configurar Materias Específicas por Curso</h4>
+                <p style="font-size: 0.9em; color: #666; margin-bottom: 10px;">
+                    Materias base (todos los cursos): Matemáticas, Lenguaje, Música, Inglés, Artes Plásticas, Ciencias Sociales, Educación Física
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <select id="configCourse" class="form-select">
+                        <option value="">Seleccionar curso...</option>
+                    </select>
+                    <input type="text" id="configSubject" class="form-input" placeholder="Nombre de la materia adicional (ej: Física, Química)">
+                    <button class="btn btn-success" onclick="addSubjectToCourse()">➕ Agregar Materia</button>
+                </div>
+                <div id="subjectsConfigList" style="background: #f8f9fa; padding: 15px; border-radius: 10px; max-height: 200px; overflow-y: auto;"></div>
+
                 <!-- Registrar Incidencia -->
                 <h4 style="margin-top: 25px;">⚠️ Registrar Incidencia</h4>
                 <div class="form-row-incident">
-                    <select id="incidentStudent" class="form-select">
+                    <select id="incidentStudent" class="form-select" onchange="updateIncidentSubjects()">
                         <option value="">Seleccionar estudiante...</option>
                     </select>
                     <select id="incidentSubject" class="form-select">
-                        <option value="Matemáticas">Matemáticas</option>
-                        <option value="Lenguaje">Lenguaje</option>
-                        <option value="Psicología-Filosofía">Psicología-Filosofía</option>
-                        <option value="Biología-Geografía">Biología-Geografía</option>
-                        <option value="Ciencias Sociales">Ciencias Sociales</option>
-                        <option value="Inglés">Inglés</option>
-                        <option value="Tecnología">Tecnología</option>
-                        <option value="Educación Física">Educación Física</option>
-                        <option value="Música">Música</option>
-                        <option value="Artes Plásticas">Artes Plásticas</option>
-                        <option value="Religión">Religión</option>
+                        <option value="">Seleccionar materia...</option>
                     </select>
                     <select id="incidentType" class="form-select">
                         <option value="No entregó tarea">No entregó tarea</option>
@@ -882,7 +886,7 @@
 
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px;">
-				<div style="margin-bottom: 15px;">
+			        <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px; font-weight: bold;">Observación:</label>
                     <textarea id="editObservation" class="form-textarea" style="width: 100%;"></textarea>
                 </div>
@@ -944,6 +948,18 @@
         const ADMIN_PASSWORD = "kabert2000";
         let currentStudentForReport = null;
         let currentIncidentForEdit = null;
+        let courseSubjects = {}; // Materias configuradas por curso
+        
+        // Materias base que todos los cursos tienen
+        const BASE_SUBJECTS = [
+            "Matemáticas",
+            "Lenguaje",
+            "Música",
+            "Inglés",
+            "Artes Plásticas",
+            "Ciencias Sociales",
+            "Educación Física"
+        ];
         
         // Lista de cursos
         const COURSES = [
@@ -976,7 +992,7 @@
 
         // Populate course selects
         function populateCourseSelects() {
-            const selects = ['studentCourse', 'filterCourse', 'parentCourseSearch'];
+            const selects = ['studentCourse', 'filterCourse', 'parentCourseSearch', 'configCourse'];
             selects.forEach(selectId => {
                 const select = document.getElementById(selectId);
                 COURSES.forEach(course => {
@@ -986,6 +1002,184 @@
                     select.appendChild(option);
                 });
             });
+        }
+
+        // Load course subjects configuration
+        async function loadCourseSubjects() {
+            try {
+                const querySnapshot = await getDocs(collection(db, 'courseSubjects'));
+                courseSubjects = {};
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    courseSubjects[data.course] = {
+                        id: doc.id,
+                        subjects: data.subjects || []
+                    };
+                });
+                updateSubjectsConfigDisplay();
+            } catch (error) {
+                console.error('Error loading course subjects:', error);
+            }
+        }
+
+        // Get all subjects for a course (base + specific)
+        function getSubjectsForCourse(course) {
+            const specific = courseSubjects[course]?.subjects || [];
+            return [...BASE_SUBJECTS, ...specific].sort();
+        }
+
+        // Add subject to course
+        window.addSubjectToCourse = async function() {
+            if (!isAdminLoggedIn) return;
+
+            const course = document.getElementById('configCourse').value;
+            const subject = document.getElementById('configSubject').value.trim();
+
+            if (!course || !subject) {
+                alert('❌ Seleccione un curso e ingrese el nombre de la materia');
+                return;
+            }
+
+            // Check if subject already exists in base or specific
+            const allSubjects = getSubjectsForCourse(course);
+            if (allSubjects.includes(subject)) {
+                alert('❌ Esta materia ya existe para este curso');
+                return;
+            }
+
+            showLoading(true);
+
+            try {
+                if (courseSubjects[course]) {
+                    // Update existing
+                    const docRef = doc(db, 'courseSubjects', courseSubjects[course].id);
+                    const updatedSubjects = [...courseSubjects[course].subjects, subject];
+                    await updateDoc(docRef, {
+                        subjects: updatedSubjects
+                    });
+                    courseSubjects[course].subjects = updatedSubjects;
+                } else {
+                    // Create new
+                    const docRef = await addDoc(collection(db, 'courseSubjects'), {
+                        course: course,
+                        subjects: [subject],
+                        createdAt: new Date()
+                    });
+                    courseSubjects[course] = {
+                        id: docRef.id,
+                        subjects: [subject]
+                    };
+                }
+
+                document.getElementById('configSubject').value = '';
+                updateSubjectsConfigDisplay();
+                alert('✅ Materia agregada correctamente');
+
+            } catch (error) {
+                console.error('Error adding subject:', error);
+                alert('❌ Error al agregar materia: ' + error.message);
+            }
+
+            showLoading(false);
+        };
+
+        // Remove subject from course
+        window.removeSubjectFromCourse = async function(course, subject) {
+            if (!isAdminLoggedIn || !confirm(`¿Eliminar "${subject}" de ${course}?`)) return;
+
+            showLoading(true);
+
+            try {
+                const docRef = doc(db, 'courseSubjects', courseSubjects[course].id);
+                const updatedSubjects = courseSubjects[course].subjects.filter(s => s !== subject);
+                
+                await updateDoc(docRef, {
+                    subjects: updatedSubjects
+                });
+                
+                courseSubjects[course].subjects = updatedSubjects;
+                updateSubjectsConfigDisplay();
+                alert('✅ Materia eliminada');
+
+            } catch (error) {
+                console.error('Error removing subject:', error);
+                alert('❌ Error al eliminar: ' + error.message);
+            }
+
+            showLoading(false);
+        };
+
+        // Update subjects config display
+        function updateSubjectsConfigDisplay() {
+            const container = document.getElementById('subjectsConfigList');
+            
+            if (Object.keys(courseSubjects).length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #999;">No hay materias específicas configuradas. Use el formulario arriba para agregar.</p>';
+                return;
+            }
+
+            let html = '';
+            COURSES.forEach(course => {
+                if (courseSubjects[course] && courseSubjects[course].subjects.length > 0) {
+                    html += `
+                        <div style="background: white; padding: 10px; margin: 5px 0; border-radius: 8px; border-left: 4px solid #4facfe;">
+                            <strong>${course}:</strong><br>
+                            <div style="margin-top: 8px;">
+                                ${courseSubjects[course].subjects.map(subject => `
+                                    <span style="display: inline-block; background: #e3f2fd; padding: 4px 10px; margin: 3px; border-radius: 15px; font-size: 0.85em;">
+                                        ${subject}
+                                        <button onclick="removeSubjectFromCourse('${course}', '${subject}')" style="background: #dc3545; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; cursor: pointer; font-size: 0.7em; margin-left: 5px;">×</button>
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            if (html === '') {
+                container.innerHTML = '<p style="text-align: center; color: #999;">No hay materias específicas configuradas.</p>';
+            } else {
+                container.innerHTML = html;
+            }
+        }
+
+        // Update incident subject selector based on student course
+        async function updateIncidentSubjects() {
+            const studentId = document.getElementById('incidentStudent').value;
+            const select = document.getElementById('incidentSubject');
+            
+            if (!studentId) {
+                // Show base subjects only
+                select.innerHTML = '';
+                BASE_SUBJECTS.forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject;
+                    option.textContent = subject;
+                    select.appendChild(option);
+                });
+                return;
+            }
+
+            // Get student's course
+            try {
+                const studentDoc = await getDocs(query(collection(db, 'students'), where('__name__', '==', studentId)));
+                if (!studentDoc.empty) {
+                    const studentData = studentDoc.docs[0].data();
+                    const course = studentData.course;
+                    const subjects = getSubjectsForCourse(course);
+                    
+                    select.innerHTML = '';
+                    subjects.forEach(subject => {
+                        const option = document.createElement('option');
+                        option.value = subject;
+                        option.textContent = subject;
+                        select.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading student course:', error);
+            }
         }
 
         // Check admin access
@@ -1004,7 +1198,8 @@
                 const adminPanel = document.getElementById('adminPanel');
                 adminPanel.insertBefore(teacherInfo, adminPanel.firstChild);
                 
-                loadAllStudentsForSelect();
+                loadStudentsForSelect();
+                loadCourseSubjects(); // Load subjects configuration
                 alert('✅ Acceso de administrador concedido');
             } else if (password.length > 0) {
                 alert('❌ Clave de administrador incorrecta');
@@ -1387,15 +1582,13 @@
             container.innerHTML = html;
         };
 
+        // Get subject summary (dynamic subjects per course)
         function getSubjectSummary(incidents) {
-            const subjects = [
-                'Matemáticas', 'Lenguaje', 'Psicología-Filosofía', 'Biología-Geografía',
-                'Ciencias Sociales', 'Inglés', 'Tecnología', 'Educación Física',
-                'Música', 'Artes Plásticas', 'Religión'
-            ];
+            // Get unique subjects from incidents
+            const uniqueSubjects = new Set(incidents.map(inc => inc.subject));
             const summary = {};
 
-            subjects.forEach(subject => {
+            uniqueSubjects.forEach(subject => {
                 summary[subject] = {
                     incidents: incidents.filter(inc => inc.subject === subject)
                 };
@@ -1525,22 +1718,25 @@
             showLoading(false);
         };
 
-        // Report functions
+        // Report functions - update to use dynamic subjects
         window.openReportModal = function(student) {
             if (!isAdminLoggedIn) return;
 
             currentStudentForReport = student;
             
-            const subjects = [
-                'Matemáticas', 'Lenguaje', 'Psicología-Filosofía', 'Biología-Geografía',
-                'Ciencias Sociales', 'Inglés', 'Tecnología', 'Educación Física',
-                'Música', 'Artes Plásticas', 'Religión'
-            ];
+            // Get all unique subjects from student's incidents
+            const studentSubjects = new Set(student.incidents.map(inc => inc.subject));
+            const allSubjects = Array.from(studentSubjects).sort();
+            
+            if (allSubjects.length === 0) {
+                alert('ℹ️ Este estudiante no tiene incidencias registradas');
+                return;
+            }
             
             const checkboxContainer = document.getElementById('subjectsCheckboxes');
             checkboxContainer.innerHTML = '';
             
-            subjects.forEach(subject => {
+            allSubjects.forEach(subject => {
                 const label = document.createElement('label');
                 label.className = 'checkbox-label';
                 label.innerHTML = `
@@ -1880,6 +2076,15 @@
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             populateCourseSelects();
+            
+            // Load base subjects initially
+            const incidentSubjectSelect = document.getElementById('incidentSubject');
+            BASE_SUBJECTS.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject;
+                option.textContent = subject;
+                incidentSubjectSelect.appendChild(option);
+            });
             
             document.getElementById('studentInitials').addEventListener('input', function(e) {
                 e.target.value = e.target.value.toUpperCase();
