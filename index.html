@@ -46,7 +46,7 @@
             margin-bottom: 10px;
         }
 
-        /* Panel de administración */
+        /* Panel de administraci贸n */
         .admin-section {
             background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
             padding: 30px;
@@ -130,7 +130,7 @@
             border-color: #4facfe;
         }
 
-        /* Sección de consulta para padres */
+        /* Secci贸n de consulta para padres */
         .parent-section {
             padding: 40px;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -714,91 +714,92 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>🎓 Kardex Estudiantil</h1>
-            <p>Sistema de seguimiento académico unificado</p>
+            <h1>馃帗 Kardex Estudiantil</h1>
+            <p>Sistema de seguimiento acad茅mico unificado</p>
         </div>
 
-        <!-- Panel de Administración -->
+        <!-- Panel de Administraci贸n -->
         <div class="admin-section">
             <div class="admin-login">
-                <h3>🔐 Acceso de Administrador</h3>
+                <h3>馃攼 Acceso de Administrador</h3>
                 <input type="password" id="adminPassword" class="admin-input" placeholder="Clave de administrador" onkeypress="if(event.key==='Enter') checkAdminAccess()">
-                <button class="btn btn-primary" onclick="checkAdminAccess()">🔓 Ingresar</button>
+                <button class="btn btn-primary" onclick="checkAdminAccess()">馃敁 Ingresar</button>
             </div>
             
             <div id="adminPanel" class="admin-panel">
-                <h3>Panel de Administración</h3>
+                <h3>Panel de Administraci贸n</h3>
                 
-                <!-- Filtros de búsqueda -->
-                <h4>🔍 Filtros de Búsqueda</h4>
+                <!-- Selecci贸n de curso -->
+                <div id="courseSelection" style="margin-bottom: 20px;">
+                    <h4>馃摎 Seleccionar Curso a Administrar</h4>
+                    <div style="display: flex; gap: 15px; align-items: end;">
+                        <select id="adminCourseSelect" class="form-select" style="flex: 1;">
+                            <option value="">Seleccionar curso...</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="loadCourseData()">馃搨 Cargar Curso</button>
+                    </div>
+                </div>
+                
+                <!-- Gesti贸n de asignaturas -->
+                <div id="subjectManagement" style="display: none; margin-bottom: 20px;">
+                    <h4>馃摑 Gesti贸n de Asignaturas</h4>
+                    <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                        <input type="text" id="newSubject" class="form-input" placeholder="Nueva asignatura" style="flex: 1;">
+                        <button class="btn btn-success" onclick="addSubject()">鉃?Agregar</button>
+                    </div>
+                    <div id="subjectsList" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;"></div>
+                </div>
+                
+                <!-- Filtros de b煤squeda -->
+                <h4>馃攳 Filtros de B煤squeda</h4>
                 <div class="form-row-filters">
-                    <select id="filterCourse" class="form-select">
-                        <option value="">Todos los cursos</option>
-                    </select>
                     <input type="text" id="filterName" class="form-input" placeholder="Buscar por nombre...">
-                    <button class="btn btn-primary" onclick="filterStudents()">🔍 Buscar</button>
+                    <button class="btn btn-primary" onclick="filterStudents()">馃攳 Buscar</button>
                 </div>
                 
                 <!-- Agregar Estudiante -->
-                <h4>➕ Agregar Estudiante</h4>
+                <h4>鉃?Agregar Estudiante</h4>
                 <div class="form-row">
                     <input type="text" id="studentName" class="form-input" placeholder="Nombre completo">
                     <input type="text" id="studentInitials" class="form-input" placeholder="Iniciales (ABID)" style="text-transform: uppercase;">
-                    <select id="studentCourse" class="form-select">
-                        <option value="">Seleccionar curso...</option>
-                    </select>
                     <input type="email" id="parentEmail" class="form-input" placeholder="Email del padre/madre">
                     <button class="btn btn-success" onclick="addStudent()">Agregar</button>
                 </div>
 
-                <!-- Configurar Materias por Curso -->
-                <h4 style="margin-top: 25px;">📚 Configurar Materias Específicas por Curso</h4>
-                <p style="font-size: 0.9em; color: #666; margin-bottom: 10px;">
-                    Materias base (todos los cursos): Matemáticas, Lenguaje, Música, Inglés, Artes Plásticas, Ciencias Sociales, Educación Física
-                </p>
-                <div style="display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 15px; margin-bottom: 15px;">
-                    <select id="configCourse" class="form-select">
-                        <option value="">Seleccionar curso...</option>
-                    </select>
-                    <input type="text" id="configSubject" class="form-input" placeholder="Nombre de la materia adicional (ej: Física, Química)">
-                    <button class="btn btn-success" onclick="addSubjectToCourse()">➕ Agregar Materia</button>
-                </div>
-                <div id="subjectsConfigList" style="background: #f8f9fa; padding: 15px; border-radius: 10px; max-height: 200px; overflow-y: auto;"></div>
-
                 <!-- Registrar Incidencia -->
-                <h4 style="margin-top: 25px;">⚠️ Registrar Incidencia</h4>
+                <h4 style="margin-top: 25px;">鈿狅笍 Registrar Incidencia</h4>
                 <div class="form-row-incident">
-                    <select id="incidentStudent" class="form-select" onchange="updateIncidentSubjects()">
+                    <select id="incidentStudent" class="form-select">
                         <option value="">Seleccionar estudiante...</option>
                     </select>
                     <select id="incidentSubject" class="form-select">
-                        <option value="">Seleccionar materia...</option>
+                        <!-- Se llenar谩 din谩micamente con las asignaturas del curso -->
                     </select>
                     <select id="incidentType" class="form-select">
-                        <option value="No entregó tarea">No entregó tarea</option>
+                        <option value="No entreg贸 tarea">No entreg贸 tarea</option>
                         <option value="Tardanza">Tardanza</option>
                         <option value="Falta injustificada">Falta injustificada</option>
-                        <option value="Indisciplina">Indisciplina</option>
+                        <option value="Mal comportamiento">Mal comportamiento</option>
                         <option value="No trajo materiales">No trajo materiales</option>
-                        <option value="No siguió instrucciones">No siguió instrucciones</option>
-                        <option value="Disrupción en clase">Disrupción en clase</option>
-                        <option value="No participó">No participó</option>
+                        <option value="No sigui贸 instrucciones">No sigui贸 instrucciones</option>
+                        <option value="Disrupci贸n en clase">Disrupci贸n en clase</option>
+                        <option value="No particip贸">No particip贸</option>
                     </select>
                     <input type="date" id="incidentDate" class="form-input">
                     <button class="btn btn-danger" onclick="addIncident()">Registrar</button>
                 </div>
 
-                <!-- Observación específica -->
+                <!-- Observaci贸n espec铆fica -->
                 <div class="form-row-observation">
-                    <textarea id="incidentObservation" class="form-textarea" placeholder="Observación específica (opcional): Describe lo que sucedió..."></textarea>
+                    <textarea id="incidentObservation" class="form-textarea" placeholder="Observaci贸n espec铆fica (opcional): Describe lo que sucedi贸..."></textarea>
                 </div>
 
                 <!-- Herramientas -->
                 <div style="margin-top: 30px; text-align: center;">
-                    <button class="btn btn-primary" onclick="exportData()">💾 Exportar Datos</button>
+                    <button class="btn btn-primary" onclick="exportData()">馃捑 Exportar Datos</button>
                     <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
-                    <button class="btn btn-primary" onclick="document.getElementById('importFile').click()">📂 Importar Datos</button>
-                    <button class="btn btn-success" onclick="loadAllStudentsAdmin()">👥 Ver Todos</button>
+                    <button class="btn btn-primary" onclick="document.getElementById('importFile').click()">馃搨 Importar Datos</button>
+                    <button class="btn btn-success" onclick="loadAllStudentsAdmin()">馃懃 Ver Todos</button>
                 </div>
             </div>
         </div>
@@ -806,8 +807,8 @@
         <!-- Consulta para Padres -->
         <div class="parent-section">
             <div class="parent-search">
-                <h2>👨‍👩‍👧‍👦 Consulta para Padres</h2>
-                <p>Ingrese las <strong>iniciales</strong> y seleccione el <strong>curso</strong> de su hijo/hija para consultar su estado académico.</p>
+                <h2>馃懆鈥嶐煈┾€嶐煈р€嶐煈?Consulta para Padres</h2>
+                <p>Ingrese las <strong>iniciales</strong> y seleccione el <strong>curso</strong> de su hijo/hija para consultar su estado acad茅mico.</p>
                 
                 <div class="search-container">
                     <div class="search-fields">
@@ -816,7 +817,7 @@
                             <option value="">Seleccionar curso...</option>
                         </select>
                     </div>
-                    <button class="btn btn-primary" onclick="searchByInitials()">🔍 Consultar Estado</button>
+                    <button class="btn btn-primary" onclick="searchByInitials()">馃攳 Consultar Estado</button>
                 </div>
             </div>
         </div>
@@ -824,12 +825,12 @@
         <!-- Resultados -->
         <div class="results">
             <div id="loadingIndicator" class="loading" style="display: none;">
-                <div style="font-size: 3em; margin-bottom: 20px;">⏳</div>
-                <h3>Cargando información...</h3>
+                <div style="font-size: 3em; margin-bottom: 20px;">鈴?/div>
+                <h3>Cargando informaci贸n...</h3>
             </div>
             <div id="resultsContainer">
                 <div class="no-data">
-                    <h3>📋 Sistema de Kardex</h3>
+                    <h3>馃搵 Sistema de Kardex</h3>
                     <p>Los administradores pueden agregar estudiantes e incidencias.<br>
                     Los padres pueden consultar el estado de sus hijos usando las iniciales de sus nombres y seleccionando el curso.</p>
                 </div>
@@ -841,7 +842,7 @@
     <div id="editModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">✏️ Editar Incidencia</h2>
+                <h2 class="modal-title">鉁忥笍 Editar Incidencia</h2>
                 <span class="close" onclick="closeEditModal()">&times;</span>
             </div>
             <div>
@@ -851,31 +852,21 @@
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px; font-weight: bold;">Materia:</label>
                     <select id="editSubject" class="form-select" style="width: 100%;">
-                        <option value="Matemáticas">Matemáticas</option>
-                        <option value="Lenguaje">Lenguaje</option>
-                        <option value="Psicología-Filosofía">Psicología-Filosofía</option>
-                        <option value="Biología-Geografía">Biología-Geografía</option>
-                        <option value="Ciencias Sociales">Ciencias Sociales</option>
-                        <option value="Inglés">Inglés</option>
-                        <option value="Tecnología">Tecnología</option>
-                        <option value="Educación Física">Educación Física</option>
-                        <option value="Música">Música</option>
-                        <option value="Artes Plásticas">Artes Plásticas</option>
-                        <option value="Religión">Religión</option>
+                        <!-- Se llenar谩 din谩micamente -->
                     </select>
                 </div>
 
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px; font-weight: bold;">Tipo:</label>
                     <select id="editType" class="form-select" style="width: 100%;">
-                        <option value="No entregó tarea">No entregó tarea</option>
+                        <option value="No entreg贸 tarea">No entreg贸 tarea</option>
                         <option value="Tardanza">Tardanza</option>
                         <option value="Falta injustificada">Falta injustificada</option>
-                        <option value="Indisciplina">Indisciplina</option>
+                        <option value="Mal comportamiento">Mal comportamiento</option>
                         <option value="No trajo materiales">No trajo materiales</option>
-                        <option value="No siguió instrucciones">No siguió instrucciones</option>
-                        <option value="Disrupción en clase">Disrupción en clase</option>
-                        <option value="No participó">No participó</option>
+                        <option value="No sigui贸 instrucciones">No sigui贸 instrucciones</option>
+                        <option value="Disrupci贸n en clase">Disrupci贸n en clase</option>
+                        <option value="No particip贸">No particip贸</option>
                     </select>
                 </div>
 
@@ -885,15 +876,13 @@
                 </div>
 
                 <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 5px;">
-			        <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Observación:</label>
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Observaci贸n:</label>
                     <textarea id="editObservation" class="form-textarea" style="width: 100%;"></textarea>
                 </div>
 
                 <div style="text-align: center; margin-top: 20px;">
-                    <button class="btn btn-success" onclick="saveEditIncident()">💾 Guardar Cambios</button>
-                    <button class="btn btn-danger" onclick="closeEditModal()">❌ Cancelar</button>
+                    <button class="btn btn-success" onclick="saveEditIncident()">馃捑 Guardar Cambios</button>
+                    <button class="btn btn-danger" onclick="closeEditModal()">鉂?Cancelar</button>
                 </div>
             </div>
         </div>
@@ -903,7 +892,7 @@
     <div id="reportModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">📄 Generar Reporte</h2>
+                <h2 class="modal-title">馃搫 Generar Reporte</h2>
                 <span class="close" onclick="closeReportModal()">&times;</span>
             </div>
             <div class="report-options">
@@ -917,13 +906,13 @@
                 <div class="checkbox-group" id="subjectsCheckboxes"></div>
             </div>
             <div style="text-align: center;">
-                <button class="btn btn-primary" onclick="generateReport()">🖨️ Generar e Imprimir</button>
-                <button class="btn btn-danger" onclick="closeReportModal()">❌ Cancelar</button>
+                <button class="btn btn-primary" onclick="generateReport()">馃枿锔?Generar e Imprimir</button>
+                <button class="btn btn-danger" onclick="closeReportModal()">鉂?Cancelar</button>
             </div>
         </div>
     </div>
 
-    <!-- Área de impresión (oculta) -->
+    <!-- 脕rea de impresi贸n (oculta) -->
     <div id="printArea" class="print-area" style="display: none;"></div>
 
     <!-- Firebase SDK -->
@@ -948,18 +937,8 @@
         const ADMIN_PASSWORD = "kabert2000";
         let currentStudentForReport = null;
         let currentIncidentForEdit = null;
-        let courseSubjects = {}; // Materias configuradas por curso
-        
-        // Materias base que todos los cursos tienen
-        const BASE_SUBJECTS = [
-            "Matemáticas",
-            "Lenguaje",
-            "Música",
-            "Inglés",
-            "Artes Plásticas",
-            "Ciencias Sociales",
-            "Educación Física"
-        ];
+        let currentAdminCourse = null;
+        let currentCourseSubjects = [];
         
         // Lista de cursos
         const COURSES = [
@@ -992,7 +971,7 @@
 
         // Populate course selects
         function populateCourseSelects() {
-            const selects = ['studentCourse', 'filterCourse', 'parentCourseSearch', 'configCourse'];
+            const selects = ['adminCourseSelect', 'parentCourseSearch'];
             selects.forEach(selectId => {
                 const select = document.getElementById(selectId);
                 COURSES.forEach(course => {
@@ -1002,184 +981,6 @@
                     select.appendChild(option);
                 });
             });
-        }
-
-        // Load course subjects configuration
-        async function loadCourseSubjects() {
-            try {
-                const querySnapshot = await getDocs(collection(db, 'courseSubjects'));
-                courseSubjects = {};
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    courseSubjects[data.course] = {
-                        id: doc.id,
-                        subjects: data.subjects || []
-                    };
-                });
-                updateSubjectsConfigDisplay();
-            } catch (error) {
-                console.error('Error loading course subjects:', error);
-            }
-        }
-
-        // Get all subjects for a course (base + specific)
-        function getSubjectsForCourse(course) {
-            const specific = courseSubjects[course]?.subjects || [];
-            return [...BASE_SUBJECTS, ...specific].sort();
-        }
-
-        // Add subject to course
-        window.addSubjectToCourse = async function() {
-            if (!isAdminLoggedIn) return;
-
-            const course = document.getElementById('configCourse').value;
-            const subject = document.getElementById('configSubject').value.trim();
-
-            if (!course || !subject) {
-                alert('❌ Seleccione un curso e ingrese el nombre de la materia');
-                return;
-            }
-
-            // Check if subject already exists in base or specific
-            const allSubjects = getSubjectsForCourse(course);
-            if (allSubjects.includes(subject)) {
-                alert('❌ Esta materia ya existe para este curso');
-                return;
-            }
-
-            showLoading(true);
-
-            try {
-                if (courseSubjects[course]) {
-                    // Update existing
-                    const docRef = doc(db, 'courseSubjects', courseSubjects[course].id);
-                    const updatedSubjects = [...courseSubjects[course].subjects, subject];
-                    await updateDoc(docRef, {
-                        subjects: updatedSubjects
-                    });
-                    courseSubjects[course].subjects = updatedSubjects;
-                } else {
-                    // Create new
-                    const docRef = await addDoc(collection(db, 'courseSubjects'), {
-                        course: course,
-                        subjects: [subject],
-                        createdAt: new Date()
-                    });
-                    courseSubjects[course] = {
-                        id: docRef.id,
-                        subjects: [subject]
-                    };
-                }
-
-                document.getElementById('configSubject').value = '';
-                updateSubjectsConfigDisplay();
-                alert('✅ Materia agregada correctamente');
-
-            } catch (error) {
-                console.error('Error adding subject:', error);
-                alert('❌ Error al agregar materia: ' + error.message);
-            }
-
-            showLoading(false);
-        };
-
-        // Remove subject from course
-        window.removeSubjectFromCourse = async function(course, subject) {
-            if (!isAdminLoggedIn || !confirm(`¿Eliminar "${subject}" de ${course}?`)) return;
-
-            showLoading(true);
-
-            try {
-                const docRef = doc(db, 'courseSubjects', courseSubjects[course].id);
-                const updatedSubjects = courseSubjects[course].subjects.filter(s => s !== subject);
-                
-                await updateDoc(docRef, {
-                    subjects: updatedSubjects
-                });
-                
-                courseSubjects[course].subjects = updatedSubjects;
-                updateSubjectsConfigDisplay();
-                alert('✅ Materia eliminada');
-
-            } catch (error) {
-                console.error('Error removing subject:', error);
-                alert('❌ Error al eliminar: ' + error.message);
-            }
-
-            showLoading(false);
-        };
-
-        // Update subjects config display
-        function updateSubjectsConfigDisplay() {
-            const container = document.getElementById('subjectsConfigList');
-            
-            if (Object.keys(courseSubjects).length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #999;">No hay materias específicas configuradas. Use el formulario arriba para agregar.</p>';
-                return;
-            }
-
-            let html = '';
-            COURSES.forEach(course => {
-                if (courseSubjects[course] && courseSubjects[course].subjects.length > 0) {
-                    html += `
-                        <div style="background: white; padding: 10px; margin: 5px 0; border-radius: 8px; border-left: 4px solid #4facfe;">
-                            <strong>${course}:</strong><br>
-                            <div style="margin-top: 8px;">
-                                ${courseSubjects[course].subjects.map(subject => `
-                                    <span style="display: inline-block; background: #e3f2fd; padding: 4px 10px; margin: 3px; border-radius: 15px; font-size: 0.85em;">
-                                        ${subject}
-                                        <button onclick="removeSubjectFromCourse('${course}', '${subject}')" style="background: #dc3545; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; cursor: pointer; font-size: 0.7em; margin-left: 5px;">×</button>
-                                    </span>
-                                `).join('')}
-                            </div>
-                        </div>
-                    `;
-                }
-            });
-
-            if (html === '') {
-                container.innerHTML = '<p style="text-align: center; color: #999;">No hay materias específicas configuradas.</p>';
-            } else {
-                container.innerHTML = html;
-            }
-        }
-
-        // Update incident subject selector based on student course
-        async function updateIncidentSubjects() {
-            const studentId = document.getElementById('incidentStudent').value;
-            const select = document.getElementById('incidentSubject');
-            
-            if (!studentId) {
-                // Show base subjects only
-                select.innerHTML = '';
-                BASE_SUBJECTS.forEach(subject => {
-                    const option = document.createElement('option');
-                    option.value = subject;
-                    option.textContent = subject;
-                    select.appendChild(option);
-                });
-                return;
-            }
-
-            // Get student's course
-            try {
-                const studentDoc = await getDocs(query(collection(db, 'students'), where('__name__', '==', studentId)));
-                if (!studentDoc.empty) {
-                    const studentData = studentDoc.docs[0].data();
-                    const course = studentData.course;
-                    const subjects = getSubjectsForCourse(course);
-                    
-                    select.innerHTML = '';
-                    subjects.forEach(subject => {
-                        const option = document.createElement('option');
-                        option.value = subject;
-                        option.textContent = subject;
-                        select.appendChild(option);
-                    });
-                }
-            } catch (error) {
-                console.error('Error loading student course:', error);
-            }
         }
 
         // Check admin access
@@ -1193,702 +994,919 @@
                 
                 const teacherInfo = document.createElement('div');
                 teacherInfo.style.cssText = 'background: #d4edda; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center;';
-                teacherInfo.innerHTML = '<strong>✅ Sesión de administrador iniciada</strong><br>Acceso a todos los cursos';
+                teacherInfo.innerHTML = '<strong>鉁?Sesi贸n de administrador iniciada</strong><br>Seleccione un curso para administrar';
                 
                 const adminPanel = document.getElementById('adminPanel');
                 adminPanel.insertBefore(teacherInfo, adminPanel.firstChild);
                 
-                loadStudentsForSelect();
-                loadCourseSubjects(); // Load subjects configuration
-                alert('✅ Acceso de administrador concedido');
+                alert('鉁?Acceso de administrador concedido');
             } else if (password.length > 0) {
-                alert('❌ Clave de administrador incorrecta');
+                alert('鉂?Clave de administrador incorrecta');
+            }
+        };
+
+        // Load course data for admin
+        window.loadCourseData = async function() {
+            if (!isAdminLoggedIn) {
+                alert('鉂?Acceso denegado');
+                return;
+            }
+
+            const course = document.getElementById('adminCourseSelect').value;
+            if (!course) {
+                alert('鉂?Seleccione un curso');
+                return;
+            }
+
+            currentAdminCourse = course;
+            document.getElementById('subjectManagement').style.display = 'block';
+            
+            // Cargar asignaturas del curso
+            await loadCourseSubjects(course);
+            
+            // Cargar estudiantes del curso
+            await loadCourseStudents(course);
+            
+            // Actualizar select de estudiantes para incidencias
+            await loadAllStudentsForSelect();
+        };
+
+        // Load course subjects
+        async function loadCourseSubjects(course) {
+            try {
+                const subjectsRef = collection(db, 'subjects');
+                const q = query(subjectsRef, where('course', '==', course));
+                const querySnapshot = await getDocs(q);
+                
+                currentCourseSubjects = [];
+                if (!querySnapshot.empty) {
+                    querySnapshot.forEach((doc) => {
+                        currentCourseSubjects.push({ id: doc.id, ...doc.data() });
+                    });
+                } else {
+                    // Si no hay asignaturas, crear las predeterminadas
+                    const defaultSubjects = [
+                        "Matem谩ticas", "Lenguaje", "Psicolog铆a-Filosof铆a", "Biolog铆a-Geograf铆a",
+                        "Ciencias Sociales", "F铆sica-Qu铆mica", "Ingl茅s", "Computaci贸n"
+                    ];
+                    
+                    for (const subjectName of defaultSubjects) {
+                        await addDoc(collection(db, 'subjects'), {
+                            name: subjectName,
+                            course: course
+                        });
+                    }
+                    
+                    // Recargar asignaturas
+                    await loadCourseSubjects(course);
+                    return;
+                }
+                
+                // Actualizar la lista de asignaturas en la UI
+                updateSubjectsList();
+                
+                // Actualizar el select de asignaturas para incidencias
+                const subjectSelect = document.getElementById('incidentSubject');
+                subjectSelect.innerHTML = '<option value="">Seleccionar materia...</option>';
+                currentCourseSubjects.forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject.name;
+                    option.textContent = subject.name;
+                    subjectSelect.appendChild(option);
+                });
+                
+            } catch (error) {
+                console.error('Error loading subjects:', error);
+                alert('鉂?Error al cargar las asignaturas');
+            }
+        }
+
+        // Update subjects list in UI
+        function updateSubjectsList() {
+            const subjectsList = document.getElementById('subjectsList');
+            subjectsList.innerHTML = '';
+            
+            if (currentCourseSubjects.length === 0) {
+                subjectsList.innerHTML = '<p style="text-align: center; color: #666;">No hay asignaturas registradas para este curso</p>';
+                return;
+            }
+            
+            currentCourseSubjects.forEach(subject => {
+                const subjectItem = document.createElement('div');
+                subjectItem.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 10px; background: white; border-radius: 8px; margin-bottom: 8px;';
+                subjectItem.innerHTML = `
+                    <span>馃摎 ${subject.name}</span>
+                    <button class="btn-small btn-danger" onclick="deleteSubject('${subject.id}')">馃棏锔?Eliminar</button>
+                `;
+                subjectsList.appendChild(subjectItem);
+            });
+        }
+
+        // Add subject
+        window.addSubject = async function() {
+            if (!isAdminLoggedIn || !currentAdminCourse) {
+                alert('鉂?Acceso denegado o curso no seleccionado');
+                return;
+            }
+
+            const subjectName = document.getElementById('newSubject').value.trim();
+            if (!subjectName) {
+                alert('鉂?Ingrese el nombre de la asignatura');
+                return;
+            }
+
+            try {
+                await addDoc(collection(db, 'subjects'), {
+                    name: subjectName,
+                    course: currentAdminCourse
+                });
+                
+                document.getElementById('newSubject').value = '';
+                await loadCourseSubjects(currentAdminCourse);
+                alert('鉁?Asignatura agregada correctamente');
+            } catch (error) {
+                console.error('Error adding subject:', error);
+                alert('鉂?Error al agregar la asignatura');
+            }
+        };
+
+        // Delete subject
+        window.deleteSubject = async function(subjectId) {
+            if (!isAdminLoggedIn) {
+                alert('鉂?Acceso denegado');
+                return;
+            }
+
+            if (!confirm('驴Est谩 seguro de que desea eliminar esta asignatura? Esto tambi茅n eliminar谩 todas las incidencias relacionadas.')) {
+                return;
+            }
+
+            try {
+                // Eliminar la asignatura
+                await deleteDoc(doc(db, 'subjects', subjectId));
+                
+                // Eliminar incidencias relacionadas con esta asignatura
+                const incidentsRef = collection(db, 'incidents');
+                const q = query(incidentsRef, where('subject', '==', currentCourseSubjects.find(s => s.id === subjectId)?.name));
+                const querySnapshot = await getDocs(q);
+                
+                const deletePromises = [];
+                querySnapshot.forEach((doc) => {
+                    deletePromises.push(deleteDoc(doc.ref));
+                });
+                
+                await Promise.all(deletePromises);
+                
+                await loadCourseSubjects(currentAdminCourse);
+                alert('鉁?Asignatura eliminada correctamente');
+            } catch (error) {
+                console.error('Error deleting subject:', error);
+                alert('鉂?Error al eliminar la asignatura');
+            }
+        };
+
+        // Load course students
+        async function loadCourseStudents(course) {
+            try {
+                const studentsRef = collection(db, 'students');
+                const q = query(studentsRef, where('course', '==', course));
+                const querySnapshot = await getDocs(q);
+                
+                const students = [];
+                querySnapshot.forEach((doc) => {
+                    students.push({ id: doc.id, ...doc.data() });
+                });
+                
+                displayStudents(students);
+            } catch (error) {
+                console.error('Error loading students:', error);
+                alert('鉂?Error al cargar los estudiantes');
+            }
+        }
+
+        // Load all students for select
+        window.loadAllStudentsForSelect = async function() {
+            if (!isAdminLoggedIn || !currentAdminCourse) {
+                return;
+            }
+
+            try {
+                const studentsRef = collection(db, 'students');
+                const q = query(studentsRef, where('course', '==', currentAdminCourse));
+                const querySnapshot = await getDocs(q);
+                
+                const select = document.getElementById('incidentStudent');
+                select.innerHTML = '<option value="">Seleccionar estudiante...</option>';
+                
+                querySnapshot.forEach((doc) => {
+                    const student = doc.data();
+                    const option = document.createElement('option');
+                    option.value = doc.id;
+                    option.textContent = student.name;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading students for select:', error);
             }
         };
 
         // Add student
         window.addStudent = async function() {
-            if (!isAdminLoggedIn) {
-                alert('❌ Acceso denegado');
+            if (!isAdminLoggedIn || !currentAdminCourse) {
+                alert('鉂?Acceso denegado o curso no seleccionado');
                 return;
             }
 
             const name = document.getElementById('studentName').value.trim();
             const initials = document.getElementById('studentInitials').value.trim().toUpperCase();
-            const course = document.getElementById('studentCourse').value;
-            const email = document.getElementById('parentEmail').value.trim().toLowerCase();
+            const parentEmail = document.getElementById('parentEmail').value.trim();
 
-            if (!name || !initials || !course) {
-                alert('❌ Complete todos los campos obligatorios (nombre, iniciales y curso)');
+            if (!name || !initials) {
+                alert('鉂?Complete nombre e iniciales');
                 return;
             }
-
-            if (!/^[A-Z]{2,6}$/.test(initials)) {
-                alert('❌ Las iniciales deben ser 2-6 letras mayúsculas (ej: ABCD)');
-                return;
-            }
-
-            showLoading(true);
 
             try {
-                const studentsRef = collection(db, 'students');
-                const q = query(studentsRef, where('initials', '==', initials), where('course', '==', course));
-                const querySnapshot = await getDocs(q);
-
-                if (!querySnapshot.empty) {
-                    alert('❌ Ya existe un estudiante con esas iniciales en este curso');
-                    showLoading(false);
-                    return;
-                }
-
                 await addDoc(collection(db, 'students'), {
                     name: name,
                     initials: initials,
-                    parentEmail: email,
-                    course: course,
-                    dateAdded: new Date().toISOString(),
+                    parentEmail: parentEmail,
+                    course: currentAdminCourse,
                     createdAt: new Date()
                 });
 
                 document.getElementById('studentName').value = '';
                 document.getElementById('studentInitials').value = '';
-                document.getElementById('studentCourse').value = '';
                 document.getElementById('parentEmail').value = '';
-
-                alert('✅ Estudiante agregado correctamente');
-                loadAllStudentsForSelect();
                 
+                await loadCourseStudents(currentAdminCourse);
+                await loadAllStudentsForSelect();
+                alert('鉁?Estudiante agregado correctamente');
             } catch (error) {
                 console.error('Error adding student:', error);
-                alert('❌ Error al agregar estudiante: ' + error.message);
+                alert('鉂?Error al agregar el estudiante');
             }
-
-            showLoading(false);
         };
 
         // Add incident
         window.addIncident = async function() {
             if (!isAdminLoggedIn) {
-                alert('❌ Acceso denegado');
+                alert('鉂?Acceso denegado');
                 return;
             }
 
             const studentId = document.getElementById('incidentStudent').value;
             const subject = document.getElementById('incidentSubject').value;
             const type = document.getElementById('incidentType').value;
-            const selectedDate = document.getElementById('incidentDate').value;
+            const date = document.getElementById('incidentDate').value;
             const observation = document.getElementById('incidentObservation').value.trim();
 
-            if (!studentId) {
-                alert('❌ Seleccione un estudiante');
+            if (!studentId || !subject || !type || !date) {
+                alert('鉂?Complete todos los campos obligatorios');
                 return;
             }
-
-            if (!selectedDate) {
-                alert('❌ Seleccione una fecha');
-                return;
-            }
-
-            const dateObj = new Date(selectedDate + 'T00:00:00');
-            const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-            const dayOfWeek = days[dateObj.getDay()];
-
-            showLoading(true);
 
             try {
                 await addDoc(collection(db, 'incidents'), {
                     studentId: studentId,
                     subject: subject,
                     type: type,
-                    day: dayOfWeek,
-                    observation: observation || '',
-                    date: selectedDate,
+                    date: date,
+                    observation: observation,
                     createdAt: new Date()
                 });
 
                 document.getElementById('incidentObservation').value = '';
-                alert('✅ Incidencia registrada');
+                alert('鉁?Incidencia registrada correctamente');
                 
+                // Recargar estudiantes para mostrar la nueva incidencia
+                await loadCourseStudents(currentAdminCourse);
             } catch (error) {
                 console.error('Error adding incident:', error);
-                alert('❌ Error al registrar incidencia: ' + error.message);
-            }
-
-            showLoading(false);
-        };
-
-        // Load all students for select
-        window.loadAllStudentsForSelect = async function() {
-            try {
-                const querySnapshot = await getDocs(collection(db, 'students'));
-                const select = document.getElementById('incidentStudent');
-                select.innerHTML = '<option value="">Seleccionar estudiante...</option>';
-
-                const studentsByCourse = {};
-                querySnapshot.forEach((doc) => {
-                    const student = doc.data();
-                    if (!studentsByCourse[student.course]) {
-                        studentsByCourse[student.course] = [];
-                    }
-                    studentsByCourse[student.course].push({ id: doc.id, ...student });
-                });
-
-                Object.keys(studentsByCourse).sort().forEach(course => {
-                    const optgroup = document.createElement('optgroup');
-                    optgroup.label = course;
-                    studentsByCourse[course].forEach(student => {
-                        const option = document.createElement('option');
-                        option.value = student.id;
-                        option.textContent = `${student.name} (${student.initials})`;
-                        optgroup.appendChild(option);
-                    });
-                    select.appendChild(optgroup);
-                });
-            } catch (error) {
-                console.error('Error loading students:', error);
+                alert('鉂?Error al registrar la incidencia');
             }
         };
 
-        // Search by initials (for parents)
+        // Search by initials
         window.searchByInitials = async function() {
             const initials = document.getElementById('studentInitialsSearch').value.trim().toUpperCase();
             const course = document.getElementById('parentCourseSearch').value;
-            
-            if (!initials) {
-                alert('❌ Ingrese las iniciales del estudiante');
+
+            if (!initials || !course) {
+                alert('鉂?Ingrese las iniciales y seleccione el curso');
                 return;
             }
 
-            if (!course) {
-                alert('❌ Seleccione el curso');
-                return;
-            }
-
-            if (!/^[A-Z]{2,6}$/.test(initials)) {
-                alert('❌ Ingrese solo 2-6 letras (ej: ABCD)');
-                return;
-            }
-
-            showLoading(true);
+            document.getElementById('loadingIndicator').style.display = 'block';
+            document.getElementById('resultsContainer').innerHTML = '';
 
             try {
                 const studentsRef = collection(db, 'students');
                 const q = query(studentsRef, where('initials', '==', initials), where('course', '==', course));
-                const studentSnapshot = await getDocs(q);
+                const querySnapshot = await getDocs(q);
 
-                if (studentSnapshot.empty) {
-                    showError('❌ No se encontró ningún estudiante con esas iniciales en el curso seleccionado');
-                    showLoading(false);
+                if (querySnapshot.empty) {
+                    document.getElementById('loadingIndicator').style.display = 'none';
+                    document.getElementById('resultsContainer').innerHTML = `
+                        <div class="error">
+                            <h3>鉂?Estudiante no encontrado</h3>
+                            <p>Verifique las iniciales y el curso seleccionado</p>
+                        </div>
+                    `;
                     return;
                 }
 
-                const studentDoc = studentSnapshot.docs[0];
-                const student = { id: studentDoc.id, ...studentDoc.data() };
+                const students = [];
+                querySnapshot.forEach((doc) => {
+                    students.push({ id: doc.id, ...doc.data() });
+                });
 
+                await displayStudentsWithIncidents(students);
+                document.getElementById('loadingIndicator').style.display = 'none';
+            } catch (error) {
+                console.error('Error searching student:', error);
+                document.getElementById('loadingIndicator').style.display = 'none';
+                document.getElementById('resultsContainer').innerHTML = `
+                    <div class="error">
+                        <h3>鉂?Error en la b煤squeda</h3>
+                        <p>Intente nuevamente</p>
+                    </div>
+                `;
+            }
+        };
+
+        // Display students with incidents
+        async function displayStudentsWithIncidents(students) {
+            const resultsContainer = document.getElementById('resultsContainer');
+            resultsContainer.innerHTML = '';
+
+            for (const student of students) {
+                // Get incidents for this student
                 const incidentsRef = collection(db, 'incidents');
-                const incidentsQuery = query(incidentsRef, where('studentId', '==', student.id), orderBy('createdAt', 'desc'));
-                const incidentsSnapshot = await getDocs(incidentsQuery);
+                const q = query(incidentsRef, where('studentId', '==', student.id), orderBy('date', 'desc'));
+                const querySnapshot = await getDocs(q);
 
                 const incidents = [];
-                incidentsSnapshot.forEach((doc) => {
+                querySnapshot.forEach((doc) => {
                     incidents.push({ id: doc.id, ...doc.data() });
                 });
 
-                displayStudentResults([{ ...student, incidents }]);
-                
-            } catch (error) {
-                console.error('Error searching student:', error);
-                showError('❌ Error al buscar estudiante: ' + error.message);
+                // Group incidents by subject
+                const incidentsBySubject = {};
+                incidents.forEach(incident => {
+                    if (!incidentsBySubject[incident.subject]) {
+                        incidentsBySubject[incident.subject] = [];
+                    }
+                    incidentsBySubject[incident.subject].push(incident);
+                });
+
+                // Calculate status
+                const totalIncidents = incidents.length;
+                let status = 'excellent';
+                let statusText = 'Excelente';
+
+                if (totalIncidents >= 10) {
+                    status = 'critical';
+                    statusText = 'Cr铆tico';
+                } else if (totalIncidents >= 5) {
+                    status = 'warning';
+                    statusText = 'Preocupante';
+                } else if (totalIncidents >= 1) {
+                    status = 'good';
+                    statusText = 'Bueno';
+                }
+
+                // Create student card
+                const studentCard = document.createElement('div');
+                studentCard.className = 'student-card';
+                studentCard.innerHTML = `
+                    <div class="student-header">
+                        <h2 class="student-name">${student.name}</h2>
+                        <p class="student-id">Iniciales: ${student.initials} | Curso: ${student.course}</p>
+                        <div class="status-badge status-${status}">Estado: ${statusText} (${totalIncidents} incidencias)</div>
+                    </div>
+                    <div class="subjects-grid">
+                        ${Object.keys(incidentsBySubject).map(subject => {
+                            const subjectIncidents = incidentsBySubject[subject];
+                            const subjectCount = subjectIncidents.length;
+                            
+                            let subjectStatus = 'good';
+                            let subjectStatusText = 'Bueno';
+                            
+                            if (subjectCount >= 5) {
+                                subjectStatus = 'critical';
+                                subjectStatusText = 'Cr铆tico';
+                            } else if (subjectCount >= 3) {
+                                subjectStatus = 'warning';
+                                subjectStatusText = 'Preocupante';
+                            }
+                            
+                            return `
+                                <div class="subject-card ${subjectStatus}">
+                                    <div class="subject-header">
+                                        <div class="subject-name">${subject}</div>
+                                        <div class="subject-status status-${subjectStatus}-subject">${subjectCount} incidencias</div>
+                                    </div>
+                                    <div class="incidents-list">
+                                        ${subjectIncidents.map(incident => `
+                                            <div class="incident-item">
+                                                <div class="incident-header">
+                                                    <span class="incident-date-day">${formatDate(incident.date)}</span>
+                                                    <span class="incident-type">${incident.type}</span>
+                                                </div>
+                                                ${incident.observation ? `<div class="incident-observation">${incident.observation}</div>` : ''}
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    <div style="text-align: center; margin-top: 25px;">
+                        <button class="btn btn-primary" onclick="openReportModal('${student.id}')">馃搫 Generar Reporte</button>
+                    </div>
+                `;
+
+                resultsContainer.appendChild(studentCard);
             }
+        }
 
-            showLoading(false);
-        };
+        // Display students (admin view)
+        async function displayStudents(students) {
+            const resultsContainer = document.getElementById('resultsContainer');
+            resultsContainer.innerHTML = '';
 
-        // Filter students (admin)
+            for (const student of students) {
+                // Get incidents for this student
+                const incidentsRef = collection(db, 'incidents');
+                const q = query(incidentsRef, where('studentId', '==', student.id), orderBy('date', 'desc'));
+                const querySnapshot = await getDocs(q);
+
+                const incidents = [];
+                querySnapshot.forEach((doc) => {
+                    incidents.push({ id: doc.id, ...doc.data() });
+                });
+
+                // Group incidents by subject
+                const incidentsBySubject = {};
+                incidents.forEach(incident => {
+                    if (!incidentsBySubject[incident.subject]) {
+                        incidentsBySubject[incident.subject] = [];
+                    }
+                    incidentsBySubject[incident.subject].push(incident);
+                });
+
+                // Calculate status
+                const totalIncidents = incidents.length;
+                let status = 'excellent';
+                let statusText = 'Excelente';
+
+                if (totalIncidents >= 10) {
+                    status = 'critical';
+                    statusText = 'Cr铆tico';
+                } else if (totalIncidents >= 5) {
+                    status = 'warning';
+                    statusText = 'Preocupante';
+                } else if (totalIncidents >= 1) {
+                    status = 'good';
+                    statusText = 'Bueno';
+                }
+
+                // Create student card
+                const studentCard = document.createElement('div');
+                studentCard.className = 'student-card';
+                studentCard.innerHTML = `
+                    <div class="student-header">
+                        <h2 class="student-name">${student.name}</h2>
+                        <p class="student-id">Iniciales: ${student.initials} | Curso: ${student.course}</p>
+                        <div class="status-badge status-${status}">Estado: ${statusText} (${totalIncidents} incidencias)</div>
+                    </div>
+                    <div class="subjects-grid">
+                        ${Object.keys(incidentsBySubject).map(subject => {
+                            const subjectIncidents = incidentsBySubject[subject];
+                            const subjectCount = subjectIncidents.length;
+                            
+                            let subjectStatus = 'good';
+                            let subjectStatusText = 'Bueno';
+                            
+                            if (subjectCount >= 5) {
+                                subjectStatus = 'critical';
+                                subjectStatusText = 'Cr铆tico';
+                            } else if (subjectCount >= 3) {
+                                subjectStatus = 'warning';
+                                subjectStatusText = 'Preocupante';
+                            }
+                            
+                            return `
+                                <div class="subject-card ${subjectStatus}">
+                                    <div class="subject-header">
+                                        <div class="subject-name">${subject}</div>
+                                        <div class="subject-status status-${subjectStatus}-subject">${subjectCount} incidencias</div>
+                                    </div>
+                                    <div class="incidents-list">
+                                        ${subjectIncidents.map(incident => `
+                                            <div class="incident-item">
+                                                <div class="incident-header">
+                                                    <span class="incident-date-day">${formatDate(incident.date)}</span>
+                                                    <span class="incident-type">${incident.type}</span>
+                                                </div>
+                                                ${incident.observation ? `<div class="incident-observation">${incident.observation}</div>` : ''}
+                                                <div class="incident-actions">
+                                                    <button class="btn-small btn-edit" onclick="openEditModal('${student.id}', '${incident.id}')">鉁忥笍 Editar</button>
+                                                    <button class="btn-small btn-delete" onclick="deleteIncident('${incident.id}')">馃棏锔?Eliminar</button>
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    <div class="admin-actions">
+                        <button class="btn btn-primary" onclick="openReportModal('${student.id}')">馃搫 Generar Reporte</button>
+                        <button class="btn btn-danger" onclick="deleteStudent('${student.id}')">馃棏锔?Eliminar Estudiante</button>
+                    </div>
+                `;
+
+                resultsContainer.appendChild(studentCard);
+            }
+        }
+
+        // Filter students
         window.filterStudents = async function() {
-            if (!isAdminLoggedIn) {
-                alert('❌ Acceso denegado');
+            if (!isAdminLoggedIn || !currentAdminCourse) {
+                alert('鉂?Acceso denegado o curso no seleccionado');
                 return;
             }
 
-            const course = document.getElementById('filterCourse').value;
-            const nameFilter = document.getElementById('filterName').value.trim().toLowerCase();
-
-            showLoading(true);
-
+            const filterName = document.getElementById('filterName').value.toLowerCase().trim();
+            
             try {
-                let studentsQuery;
-                if (course) {
-                    studentsQuery = query(collection(db, 'students'), where('course', '==', course));
-                } else {
-                    studentsQuery = collection(db, 'students');
-                }
-
-                const studentsSnapshot = await getDocs(studentsQuery);
-                const students = [];
-
-                for (const doc of studentsSnapshot.docs) {
-                    const student = { id: doc.id, ...doc.data() };
-                    
-                    if (nameFilter && !student.name.toLowerCase().includes(nameFilter)) {
-                        continue;
-                    }
-
-                    const incidentsQuery = query(collection(db, 'incidents'), where('studentId', '==', student.id), orderBy('createdAt', 'desc'));
-                    const incidentsSnapshot = await getDocs(incidentsQuery);
-                    
-                    const incidents = [];
-                    incidentsSnapshot.forEach((incDoc) => {
-                        incidents.push({ id: incDoc.id, ...incDoc.data() });
-                    });
-
-                    students.push({ ...student, incidents });
-                }
-
-                displayStudentResults(students);
+                const studentsRef = collection(db, 'students');
+                const q = query(studentsRef, where('course', '==', currentAdminCourse));
+                const querySnapshot = await getDocs(q);
                 
+                const students = [];
+                querySnapshot.forEach((doc) => {
+                    const student = { id: doc.id, ...doc.data() };
+                    if (student.name.toLowerCase().includes(filterName)) {
+                        students.push(student);
+                    }
+                });
+                
+                displayStudents(students);
             } catch (error) {
                 console.error('Error filtering students:', error);
-                showError('❌ Error al filtrar estudiantes: ' + error.message);
+                alert('鉂?Error al filtrar estudiantes');
             }
-
-            showLoading(false);
         };
 
         // Load all students (admin)
         window.loadAllStudentsAdmin = async function() {
-            if (!isAdminLoggedIn) {
-                alert('❌ Acceso denegado');
+            if (!isAdminLoggedIn || !currentAdminCourse) {
+                alert('鉂?Acceso denegado o curso no seleccionado');
                 return;
             }
 
-            showLoading(true);
+            document.getElementById('filterName').value = '';
+            await loadCourseStudents(currentAdminCourse);
+        };
+
+        // Open edit modal
+        window.openEditModal = async function(studentId, incidentId) {
+            if (!isAdminLoggedIn) {
+                alert('鉂?Acceso denegado');
+                return;
+            }
 
             try {
-                const studentsSnapshot = await getDocs(collection(db, 'students'));
-                const students = [];
-
-                for (const doc of studentsSnapshot.docs) {
-                    const student = { id: doc.id, ...doc.data() };
-                    
-                    const incidentsQuery = query(collection(db, 'incidents'), where('studentId', '==', student.id), orderBy('createdAt', 'desc'));
-                    const incidentsSnapshot = await getDocs(incidentsQuery);
-                    
-                    const incidents = [];
-                    incidentsSnapshot.forEach((incDoc) => {
-                        incidents.push({ id: incDoc.id, ...incDoc.data() });
-                    });
-
-                    students.push({ ...student, incidents });
+                const incidentDoc = await getDocs(query(collection(db, 'incidents'), where('__name__', '==', incidentId)));
+                if (incidentDoc.empty) {
+                    alert('鉂?Incidencia no encontrada');
+                    return;
                 }
 
-                displayStudentResults(students);
-                
-            } catch (error) {
-                console.error('Error loading all students:', error);
-                showError('❌ Error al cargar estudiantes: ' + error.message);
-            }
+                const incident = { id: incidentId, ...incidentDoc.docs[0].data() };
+                currentIncidentForEdit = incident;
 
-            showLoading(false);
-        };
+                // Fill form with incident data
+                document.getElementById('editIncidentId').value = incidentId;
+                document.getElementById('editStudentId').value = studentId;
+                document.getElementById('editType').value = incident.type;
+                document.getElementById('editDate').value = incident.date;
+                document.getElementById('editObservation').value = incident.observation || '';
 
-        // Display results
-        window.displayStudentResults = function(students) {
-            const container = document.getElementById('resultsContainer');
-
-            if (students.length === 0) {
-                container.innerHTML = `
-                    <div class="no-data">
-                        <h3>❌ No se encontraron estudiantes</h3>
-                        <p>Intente con otros criterios de búsqueda.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            let html = '';
-
-            students.forEach(student => {
-                const subjectSummary = getSubjectSummary(student.incidents || []);
-                const overallStatus = getOverallStatus(subjectSummary);
-
-                html += `
-                    <div class="student-card">
-                        <div class="student-header">
-                            <div class="student-name">👤 ${student.name}</div>
-                            <div class="student-id">🏷️ Código: ${student.initials}</div>
-                            <div class="student-id">📚 Curso: ${student.course || 'N/A'}</div>
-                            <div class="status-badge ${overallStatus.class}">${overallStatus.text}</div>
-                        </div>
-
-                        <div class="subjects-grid">
-                `;
-
-                Object.keys(subjectSummary).forEach(subject => {
-                    const data = subjectSummary[subject];
-                    const cardClass = data.incidents.length > 4 ? 'danger' : data.incidents.length > 1 ? 'warning' : '';
-                    const statusClass = data.incidents.length === 0 ? 'status-good-subject' : 
-                                       data.incidents.length > 4 ? 'status-critical-subject' : 'status-warning-subject';
-                    const statusText = data.incidents.length === 0 ? '✅ Sin problemas' : 
-                                      data.incidents.length > 4 ? '🚨 Requiere atención' : '⚠️ Observando';
-
-                    html += `
-                        <div class="subject-card ${cardClass}">
-                            <div class="subject-header">
-                                <span class="subject-name">📚 ${subject}</span>
-                                <span class="subject-status ${statusClass}">${statusText}</span>
-                            </div>
-                            
-                            ${data.incidents.length > 0 ? `
-                                <div class="incidents-list">
-                                    ${data.incidents.map((inc) => `
-                                        <div class="incident-item">
-                                            <div class="incident-header">
-                                                <span class="incident-date-day">📅 ${inc.date} - ${inc.day || 'N/A'}</span>
-                                                <span class="incident-type">${inc.type}</span>
-                                            </div>
-                                            ${inc.observation ? `<div class="incident-observation">📝 ${inc.observation}</div>` : ''}
-                                            ${isAdminLoggedIn ? `
-                                                <div class="incident-actions no-print">
-                                                    <button class="btn-small btn-edit" onclick='editIncident(${JSON.stringify(inc)})'>✏️ Editar</button>
-                                                    <button class="btn-small btn-delete" onclick='deleteIncident("${inc.id}", "${student.id}")'>🗑️ Eliminar</button>
-                                                </div>
-                                            ` : ''}
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            ` : `
-                                <div style="text-align: center; color: #28a745; font-weight: bold; padding: 15px;">
-                                    📋 Sin incidencias registradas
-                                </div>
-                            `}
-                        </div>
-                    `;
+                // Fill subject select
+                const subjectSelect = document.getElementById('editSubject');
+                subjectSelect.innerHTML = '';
+                currentCourseSubjects.forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject.name;
+                    option.textContent = subject.name;
+                    option.selected = subject.name === incident.subject;
+                    subjectSelect.appendChild(option);
                 });
 
-                html += `
-                        </div>
-                        ${isAdminLoggedIn ? `
-                            <div class="admin-actions no-print">
-                                <button class="btn btn-primary" onclick='openReportModal(${JSON.stringify(student).replace(/'/g, "&apos;")})'>📄 Generar Reporte</button>
-                                <button class="btn btn-success" onclick='editStudent(${JSON.stringify(student).replace(/'/g, "&apos;")})'>✏️ Editar Estudiante</button>
-                                <button class="btn btn-danger" onclick='deleteStudent("${student.id}", "${student.name}")'>🗑️ Eliminar Estudiante</button>
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
+                // Show modal
+                document.getElementById('editModal').style.display = 'block';
+            } catch (error) {
+                console.error('Error opening edit modal:', error);
+                alert('鉂?Error al cargar la incidencia');
+            }
         };
 
-        // Get subject summary (dynamic subjects per course)
-        function getSubjectSummary(incidents) {
-            // Get unique subjects from incidents
-            const uniqueSubjects = new Set(incidents.map(inc => inc.subject));
-            const summary = {};
-
-            uniqueSubjects.forEach(subject => {
-                summary[subject] = {
-                    incidents: incidents.filter(inc => inc.subject === subject)
-                };
-            });
-
-            return summary;
-        }
-
-        function getOverallStatus(subjectSummary) {
-            const totalIncidents = Object.values(subjectSummary).reduce((total, subject) => total + subject.incidents.length, 0);
-
-            if (totalIncidents === 0) return { class: 'status-excellent', text: '🏆 Excelente' };
-            if (totalIncidents <= 2) return { class: 'status-good', text: '👍 Muy Bien' };
-            if (totalIncidents <= 5) return { class: 'status-warning', text: '⚠️ Atención' };
-            return { class: 'status-critical', text: '🚨 Crítico' };
-        }
-
-        window.showLoading = function(show) {
-            document.getElementById('loadingIndicator').style.display = show ? 'block' : 'none';
-        };
-
-        window.showError = function(message) {
-            document.getElementById('resultsContainer').innerHTML = `<div class="error"><h3>${message}</h3></div>`;
-        };
-
-        // Edit incident
-        window.editIncident = function(incident) {
-            if (!isAdminLoggedIn) return;
-
-            currentIncidentForEdit = incident;
-            document.getElementById('editIncidentId').value = incident.id;
-            document.getElementById('editStudentId').value = incident.studentId;
-            document.getElementById('editSubject').value = incident.subject;
-            document.getElementById('editType').value = incident.type;
-            document.getElementById('editDate').value = incident.date;
-            document.getElementById('editObservation').value = incident.observation || '';
-            document.getElementById('editModal').style.display = 'block';
-        };
-
+        // Close edit modal
         window.closeEditModal = function() {
             document.getElementById('editModal').style.display = 'none';
             currentIncidentForEdit = null;
         };
 
+        // Save edited incident
         window.saveEditIncident = async function() {
-            if (!isAdminLoggedIn) return;
+            if (!isAdminLoggedIn) {
+                alert('鉂?Acceso denegado');
+                return;
+            }
 
             const incidentId = document.getElementById('editIncidentId').value;
+            const studentId = document.getElementById('editStudentId').value;
             const subject = document.getElementById('editSubject').value;
             const type = document.getElementById('editType').value;
-            const selectedDate = document.getElementById('editDate').value;
+            const date = document.getElementById('editDate').value;
             const observation = document.getElementById('editObservation').value.trim();
 
-            const dateObj = new Date(selectedDate + 'T00:00:00');
-            const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-            const dayOfWeek = days[dateObj.getDay()];
-
-            showLoading(true);
+            if (!subject || !type || !date) {
+                alert('鉂?Complete todos los campos obligatorios');
+                return;
+            }
 
             try {
-                const incidentRef = doc(db, 'incidents', incidentId);
-                await updateDoc(incidentRef, {
+                await updateDoc(doc(db, 'incidents', incidentId), {
                     subject: subject,
                     type: type,
-                    date: selectedDate,
-                    day: dayOfWeek,
+                    date: date,
                     observation: observation
                 });
 
-                alert('✅ Incidencia actualizada');
                 closeEditModal();
-                loadAllStudentsAdmin();
-                
+                await loadCourseStudents(currentAdminCourse);
+                alert('鉁?Incidencia actualizada correctamente');
             } catch (error) {
                 console.error('Error updating incident:', error);
-                alert('❌ Error al actualizar: ' + error.message);
+                alert('鉂?Error al actualizar la incidencia');
             }
-
-            showLoading(false);
         };
 
         // Delete incident
-        window.deleteIncident = async function(incidentId, studentId) {
-            if (!isAdminLoggedIn || !confirm('¿Eliminar esta incidencia?')) return;
+        window.deleteIncident = async function(incidentId) {
+            if (!isAdminLoggedIn) {
+                alert('鉂?Acceso denegado');
+                return;
+            }
 
-            showLoading(true);
+            if (!confirm('驴Est谩 seguro de que desea eliminar esta incidencia?')) {
+                return;
+            }
 
             try {
                 await deleteDoc(doc(db, 'incidents', incidentId));
-                alert('✅ Incidencia eliminada');
-                loadAllStudentsAdmin();
+                await loadCourseStudents(currentAdminCourse);
+                alert('鉁?Incidencia eliminada correctamente');
             } catch (error) {
                 console.error('Error deleting incident:', error);
-                alert('❌ Error al eliminar: ' + error.message);
+                alert('鉂?Error al eliminar la incidencia');
             }
-
-            showLoading(false);
         };
 
         // Delete student
-        window.deleteStudent = async function(studentId, studentName) {
-            if (!isAdminLoggedIn || !confirm(`¿Eliminar "${studentName}" y todas sus incidencias?`)) return;
+        window.deleteStudent = async function(studentId) {
+            if (!isAdminLoggedIn) {
+                alert('鉂?Acceso denegado');
+                return;
+            }
 
-            showLoading(true);
+            if (!confirm('驴Est谩 seguro de que desea eliminar este estudiante? Esto tambi茅n eliminar谩 todas sus incidencias.')) {
+                return;
+            }
 
             try {
-                const incidentsQuery = query(collection(db, 'incidents'), where('studentId', '==', studentId));
-                const incidentsSnapshot = await getDocs(incidentsQuery);
+                // Delete student
+                await deleteDoc(doc(db, 'students', studentId));
+
+                // Delete student's incidents
+                const incidentsRef = collection(db, 'incidents');
+                const q = query(incidentsRef, where('studentId', '==', studentId));
+                const querySnapshot = await getDocs(q);
                 
                 const deletePromises = [];
-                incidentsSnapshot.forEach((incidentDoc) => {
-                    deletePromises.push(deleteDoc(doc(db, 'incidents', incidentDoc.id)));
+                querySnapshot.forEach((doc) => {
+                    deletePromises.push(deleteDoc(doc.ref));
                 });
                 
                 await Promise.all(deletePromises);
-                await deleteDoc(doc(db, 'students', studentId));
                 
-                alert('✅ Estudiante eliminado');
-                loadAllStudentsAdmin();
-                loadAllStudentsForSelect();
-                
+                await loadCourseStudents(currentAdminCourse);
+                await loadAllStudentsForSelect();
+                alert('鉁?Estudiante eliminado correctamente');
             } catch (error) {
                 console.error('Error deleting student:', error);
-                alert('❌ Error al eliminar: ' + error.message);
+                alert('鉂?Error al eliminar el estudiante');
             }
-
-            showLoading(false);
         };
 
-        // Report functions - update to use dynamic subjects
-        window.openReportModal = function(student) {
-            if (!isAdminLoggedIn) return;
-
-            currentStudentForReport = student;
+        // Open report modal
+        window.openReportModal = async function(studentId) {
+            currentStudentForReport = studentId;
             
-            // Get all unique subjects from student's incidents
-            const studentSubjects = new Set(student.incidents.map(inc => inc.subject));
-            const allSubjects = Array.from(studentSubjects).sort();
-            
-            if (allSubjects.length === 0) {
-                alert('ℹ️ Este estudiante no tiene incidencias registradas');
+            // Get student data
+            const studentDoc = await getDocs(query(collection(db, 'students'), where('__name__', '==', studentId)));
+            if (studentDoc.empty) {
+                alert('鉂?Estudiante no encontrado');
                 return;
             }
             
-            const checkboxContainer = document.getElementById('subjectsCheckboxes');
-            checkboxContainer.innerHTML = '';
+            const student = { id: studentId, ...studentDoc.docs[0].data() };
             
-            allSubjects.forEach(subject => {
+            // Get student's incidents
+            const incidentsRef = collection(db, 'incidents');
+            const q = query(incidentsRef, where('studentId', '==', studentId), orderBy('date', 'desc'));
+            const querySnapshot = await getDocs(q);
+            
+            const incidents = [];
+            querySnapshot.forEach((doc) => {
+                incidents.push({ id: doc.id, ...doc.data() });
+            });
+            
+            // Get unique subjects from incidents
+            const subjects = [...new Set(incidents.map(incident => incident.subject))];
+            
+            // Fill subjects checkboxes
+            const checkboxesContainer = document.getElementById('subjectsCheckboxes');
+            checkboxesContainer.innerHTML = '';
+            
+            subjects.forEach(subject => {
                 const label = document.createElement('label');
                 label.className = 'checkbox-label';
                 label.innerHTML = `
-                    <input type="checkbox" class="subject-checkbox" value="${subject}" checked> 
+                    <input type="checkbox" value="${subject}" checked>
                     ${subject}
                 `;
-                checkboxContainer.appendChild(label);
+                checkboxesContainer.appendChild(label);
             });
             
-            document.getElementById('selectAllSubjects').checked = true;
             document.getElementById('reportModal').style.display = 'block';
         };
 
+        // Close report modal
         window.closeReportModal = function() {
             document.getElementById('reportModal').style.display = 'none';
             currentStudentForReport = null;
         };
 
+        // Toggle all subjects
         window.toggleAllSubjects = function(checkbox) {
-            document.querySelectorAll('.subject-checkbox').forEach(cb => {
+            const checkboxes = document.querySelectorAll('#subjectsCheckboxes input[type="checkbox"]');
+            checkboxes.forEach(cb => {
                 cb.checked = checkbox.checked;
             });
         };
 
-        window.generateReport = function() {
+        // Generate report
+        window.generateReport = async function() {
             if (!currentStudentForReport) return;
-
-            const selectedSubjects = Array.from(document.querySelectorAll('.subject-checkbox:checked')).map(cb => cb.value);
-
+            
+            // Get selected subjects
+            const selectedSubjects = [];
+            document.querySelectorAll('#subjectsCheckboxes input[type="checkbox"]:checked').forEach(checkbox => {
+                selectedSubjects.push(checkbox.value);
+            });
+            
             if (selectedSubjects.length === 0) {
-                alert('❌ Seleccione al menos una materia');
+                alert('鉂?Seleccione al menos una materia');
                 return;
             }
-
-            const filteredIncidents = (currentStudentForReport.incidents || [])
-                .filter(inc => selectedSubjects.includes(inc.subject))
-                .sort((a, b) => new Date(a.date) - new Date(b.date));
-
-            if (filteredIncidents.length === 0) {
-                alert('ℹ️ No hay incidencias registradas');
+            
+            // Get student data
+            const studentDoc = await getDocs(query(collection(db, 'students'), where('__name__', '==', currentStudentForReport)));
+            if (studentDoc.empty) {
+                alert('鉂?Estudiante no encontrado');
                 return;
             }
-
-            const reportHTML = `
+            
+            const student = { id: currentStudentForReport, ...studentDoc.docs[0].data() };
+            
+            // Get student's incidents for selected subjects
+            const incidentsRef = collection(db, 'incidents');
+            const q = query(incidentsRef, where('studentId', '==', currentStudentForReport), orderBy('date', 'desc'));
+            const querySnapshot = await getDocs(q);
+            
+            const allIncidents = [];
+            querySnapshot.forEach((doc) => {
+                allIncidents.push({ id: doc.id, ...doc.data() });
+            });
+            
+            // Filter incidents by selected subjects
+            const incidents = allIncidents.filter(incident => selectedSubjects.includes(incident.subject));
+            
+            // Generate report HTML
+            const printArea = document.getElementById('printArea');
+            printArea.innerHTML = `
                 <div class="print-report">
                     <div class="report-header">
-                        <h1 class="report-title">📋 Reporte de Incidencias</h1>
-                        <p><strong>Sistema Kardex Estudiantil</strong></p>
-                        <p>Fecha de emisión: ${new Date().toLocaleDateString('es-ES')}</p>
+                        <h1 class="report-title">Reporte de Incidencias Acad茅micas</h1>
+                        <p>Colegio "San Juan Bautista" - Sistema de Kardex</p>
                     </div>
-
+                    
                     <div class="report-student-info">
-                        <h2>👤 Información del Estudiante</h2>
-                        <p><strong>Nombre:</strong> ${currentStudentForReport.name}</p>
-                        <p><strong>Código:</strong> ${currentStudentForReport.initials}</p>
-                        <p><strong>Curso:</strong> ${currentStudentForReport.course || 'N/A'}</p>
-                        <p><strong>Total de incidencias:</strong> ${filteredIncidents.length}</p>
-                        <p><strong>Materias incluidas:</strong> ${selectedSubjects.join(', ')}</p>
+                        <h2>Informaci贸n del Estudiante</h2>
+                        <p><strong>Nombre:</strong> ${student.name}</p>
+                        <p><strong>Iniciales:</strong> ${student.initials}</p>
+                        <p><strong>Curso:</strong> ${student.course}</p>
+                        <p><strong>Fecha de generaci贸n:</strong> ${new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
                     </div>
-
-                    <h3>📝 Detalle de Incidencias (Ordenadas por fecha)</h3>
+                    
+                    <h2>Incidencias Registradas</h2>
                     <table class="report-incidents-table">
                         <thead>
                             <tr>
-                                <th>#</th>
                                 <th>Fecha</th>
-                                <th>Día</th>
                                 <th>Materia</th>
-                                <th>Tipo</th>
-                                <th>Observación</th>
+                                <th>Tipo de Incidencia</th>
+                                <th>Observaci贸n</th>
                             </tr>
                         </thead>
                         <tbody>
-                            ${filteredIncidents.map((inc, index) => `
+                            ${incidents.map(incident => `
                                 <tr>
-                                    <td>${index + 1}</td>
-                                    <td>${inc.date}</td>
-                                    <td>${inc.day || 'N/A'}</td>
-                                    <td>${inc.subject}</td>
-                                    <td>${inc.type}</td>
-                                    <td>${inc.observation || '-'}</td>
+                                    <td>${formatDate(incident.date)}</td>
+                                    <td>${incident.subject}</td>
+                                    <td>${incident.type}</td>
+                                    <td>${incident.observation || '-'}</td>
                                 </tr>
                             `).join('')}
                         </tbody>
                     </table>
-
+                    
                     <div class="report-footer">
-                        <p>Este reporte es un documento oficial del sistema Kardex Estudiantil</p>
-                        <p>_______________________</p>
-                        <p>Firma del Profesor/a</p>
+                        <p>Este reporte fue generado autom谩ticamente por el Sistema de Kardex Estudiantil</p>
                     </div>
                 </div>
             `;
-
-            const printArea = document.getElementById('printArea');
-            printArea.innerHTML = reportHTML;
-            printArea.style.display = 'block';
-
+            
+            // Print report
             window.print();
-
-            setTimeout(() => {
-                printArea.style.display = 'none';
-            }, 1000);
-
+            
+            // Close modal
             closeReportModal();
         };
 
-        // Export/Import
+        // Export data
         window.exportData = async function() {
-            if (!isAdminLoggedIn) return;
+            if (!isAdminLoggedIn) {
+                alert('鉂?Acceso denegado');
+                return;
+            }
 
-            showLoading(true);
-            
             try {
-                const studentsSnapshot = await getDocs(collection(db, 'students'));
-                const students = [];
-                studentsSnapshot.forEach((doc) => {
-                    students.push({ id: doc.id, ...doc.data() });
-                });
+                // Get all data
+                const [studentsSnapshot, incidentsSnapshot, subjectsSnapshot] = await Promise.all([
+                    getDocs(collection(db, 'students')),
+                    getDocs(collection(db, 'incidents')),
+                    getDocs(collection(db, 'subjects'))
+                ]);
 
-                const incidentsSnapshot = await getDocs(collection(db, 'incidents'));
-                const incidents = [];
-                incidentsSnapshot.forEach((doc) => {
-                    incidents.push({ id: doc.id, ...doc.data() });
-                });
-
-                const exportData = {
-                    students: students,
-                    incidents: incidents,
+                const data = {
+                    students: studentsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })),
+                    incidents: incidentsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })),
+                    subjects: subjectsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })),
                     exportDate: new Date().toISOString()
                 };
 
-                const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `kardex_backup_${new Date().toISOString().split('T')[0]}.json`;
-                a.click();
+                // Create and download file
+                const dataStr = JSON.stringify(data, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `kardex-backup-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
                 URL.revokeObjectURL(url);
 
-                alert('✅ Datos exportados correctamente');
-
+                alert('鉁?Datos exportados correctamente');
             } catch (error) {
-                console.error('Export error:', error);
-                alert('❌ Error al exportar: ' + error.message);
+                console.error('Error exporting data:', error);
+                alert('鉂?Error al exportar los datos');
             }
-
-            showLoading(false);
         };
 
+        // Import data
         window.importData = async function(event) {
-            if (!isAdminLoggedIn) return;
+            if (!isAdminLoggedIn) {
+                alert('鉂?Acceso denegado');
+                return;
+            }
 
             const file = event.target.files[0];
             if (!file) return;
@@ -1898,219 +1916,63 @@
                 try {
                     const data = JSON.parse(e.target.result);
                     
-                    if (!data.students || !Array.isArray(data.students)) {
-                        alert('❌ Formato de archivo inválido');
+                    if (!confirm(`驴Est谩 seguro de que desea importar los datos? Esto agregar谩:\n- ${data.students?.length || 0} estudiantes\n- ${data.incidents?.length || 0} incidencias\n- ${data.subjects?.length || 0} asignaturas`)) {
                         return;
                     }
 
-                    showLoading(true);
-
-                    let addedStudents = 0;
-                    let addedIncidents = 0;
-
-                    for (const student of data.students) {
-                        try {
-                            const studentData = {
-                                name: student.name || 'Nombre no disponible',
-                                initials: student.initials || student.id || 'XXXX',
-                                parentEmail: student.parentEmail || student.email || '',
-                                course: student.course || '',
-                                dateAdded: new Date().toISOString(),
-                                createdAt: new Date()
-                            };
-
-                            const existingQuery = query(collection(db, 'students'), where('initials', '==', studentData.initials), where('course', '==', studentData.course));
-                            const existingSnapshot = await getDocs(existingQuery);
-
-                            if (existingSnapshot.empty) {
-                                await addDoc(collection(db, 'students'), studentData);
-                                addedStudents++;
-                            }
-                        } catch (error) {
-                            console.warn('Error importing student:', student.name, error);
+                    // Import subjects
+                    if (data.subjects) {
+                        for (const subject of data.subjects) {
+                            await addDoc(collection(db, 'subjects'), subject);
                         }
                     }
 
-                    if (data.incidents && Array.isArray(data.incidents)) {
+                    // Import students
+                    if (data.students) {
+                        for (const student of data.students) {
+                            await addDoc(collection(db, 'students'), student);
+                        }
+                    }
+
+                    // Import incidents
+                    if (data.incidents) {
                         for (const incident of data.incidents) {
-                            try {
-                                await addDoc(collection(db, 'incidents'), {
-                                    studentId: incident.studentId,
-                                    subject: incident.subject || 'General',
-                                    type: incident.type || 'Incidencia general',
-                                    day: incident.day || 'N/A',
-                                    observation: incident.observation || '',
-                                    date: incident.date || new Date().toISOString().split('T')[0],
-                                    createdAt: new Date()
-                                });
-                                addedIncidents++;
-                            } catch (error) {
-                                console.warn('Error importing incident:', error);
-                            }
+                            await addDoc(collection(db, 'incidents'), incident);
                         }
                     }
 
-                    alert(`✅ Importación completa:\n${addedStudents} estudiantes agregados\n${addedIncidents} incidencias agregadas`);
-                    loadAllStudentsForSelect();
+                    alert('鉁?Datos importados correctamente');
                     
-                } catch (error) {
-                    console.error('Import error:', error);
-                    alert('❌ Error al importar archivo: ' + error.message);
-                }
-
-                showLoading(false);
-                event.target.value = '';
-            };
-            
-            reader.readAsText(file);
-        };
-
-        // Close modals on outside click
-        window.onclick = function(event) {
-            const editModal = document.getElementById('editModal');
-            const reportModal = document.getElementById('reportModal');
-            const editStudentModal = document.getElementById('editStudentModal');
-            
-            if (event.target == editModal) {
-                closeEditModal();
-            }
-            if (event.target == reportModal) {
-                closeReportModal();
-            }
-            if (event.target == editStudentModal) {
-                closeEditStudentModal();
-            }
-        };
-
-        // Edit student functions
-        window.editStudent = function(student) {
-            if (!isAdminLoggedIn) return;
-
-            document.getElementById('editStudentId').value = student.id;
-            document.getElementById('editStudentName').value = student.name;
-            document.getElementById('editStudentInitials').value = student.initials;
-            document.getElementById('editStudentCourse').value = student.course;
-            document.getElementById('editStudentEmail').value = student.parentEmail || '';
-            
-            // Populate course dropdown
-            const select = document.getElementById('editStudentCourse');
-            select.innerHTML = '<option value="">Seleccionar curso...</option>';
-            COURSES.forEach(course => {
-                const option = document.createElement('option');
-                option.value = course;
-                option.textContent = course;
-                if (course === student.course) {
-                    option.selected = true;
-                }
-                select.appendChild(option);
-            });
-            
-            document.getElementById('editStudentModal').style.display = 'block';
-        };
-
-        window.closeEditStudentModal = function() {
-            document.getElementById('editStudentModal').style.display = 'none';
-        };
-
-        window.saveEditStudent = async function() {
-            if (!isAdminLoggedIn) return;
-
-            const studentId = document.getElementById('editStudentId').value;
-            const name = document.getElementById('editStudentName').value.trim();
-            const initials = document.getElementById('editStudentInitials').value.trim().toUpperCase();
-            const course = document.getElementById('editStudentCourse').value;
-            const email = document.getElementById('editStudentEmail').value.trim().toLowerCase();
-
-            if (!name || !initials || !course) {
-                alert('❌ Complete todos los campos obligatorios');
-                return;
-            }
-
-            if (!/^[A-Z]{2,6}$/.test(initials)) {
-                alert('❌ Las iniciales deben ser 2-6 letras mayúsculas');
-                return;
-            }
-
-            showLoading(true);
-
-            try {
-                // Check if new initials already exist in the same course (excluding current student)
-                const studentsRef = collection(db, 'students');
-                const q = query(studentsRef, where('initials', '==', initials), where('course', '==', course));
-                const querySnapshot = await getDocs(q);
-
-                let exists = false;
-                querySnapshot.forEach((doc) => {
-                    if (doc.id !== studentId) {
-                        exists = true;
+                    // Reload current course data
+                    if (currentAdminCourse) {
+                        await loadCourseData();
                     }
-                });
-
-                if (exists) {
-                    alert('❌ Ya existe otro estudiante con esas iniciales en este curso');
-                    showLoading(false);
-                    return;
+                } catch (error) {
+                    console.error('Error importing data:', error);
+                    alert('鉂?Error al importar los datos');
                 }
-
-                const studentRef = doc(db, 'students', studentId);
-                await updateDoc(studentRef, {
-                    name: name,
-                    initials: initials,
-                    course: course,
-                    parentEmail: email
-                });
-
-                alert('✅ Estudiante actualizado correctamente');
-                closeEditStudentModal();
-                loadAllStudentsAdmin();
-                loadAllStudentsForSelect();
-                
-            } catch (error) {
-                console.error('Error updating student:', error);
-                alert('❌ Error al actualizar estudiante: ' + error.message);
-            }
-
-            showLoading(false);
+            };
+            reader.readAsText(file);
+            
+            // Reset file input
+            event.target.value = '';
         };
 
-        // Initialize on page load
+        // Utility function to format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('es-ES', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        }
+
+        // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
             populateCourseSelects();
-            
-            // Load base subjects initially
-            const incidentSubjectSelect = document.getElementById('incidentSubject');
-            BASE_SUBJECTS.forEach(subject => {
-                const option = document.createElement('option');
-                option.value = subject;
-                option.textContent = subject;
-                incidentSubjectSelect.appendChild(option);
-            });
-            
-            document.getElementById('studentInitials').addEventListener('input', function(e) {
-                e.target.value = e.target.value.toUpperCase();
-            });
-            
-            document.getElementById('studentInitialsSearch').addEventListener('input', function(e) {
-                e.target.value = e.target.value.toUpperCase();
-            });
-
-            const today = new Date();
-            const dateInput = document.getElementById('incidentDate');
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const day = String(today.getDate()).padStart(2, '0');
-            dateInput.value = `${year}-${month}-${day}`;
-
-            console.log('🔥 Firebase Kardex System loaded successfully!');
         });
-
-        window.addEventListener('error', function(e) {
-            console.error('Global error:', e.error);
-            if (e.error && e.error.message && e.error.message.includes('Firebase')) {
-                alert('⚠️ Error de conexión con Firebase. Verifique su conexión a internet.');
-            }
-        });
-
     </script>
 </body>
 </html>
