@@ -46,7 +46,7 @@
             margin-bottom: 10px;
         }
 
-        /* Panel de administraci贸n */
+        /* Panel de administración */
         .admin-section {
             background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
             padding: 30px;
@@ -130,7 +130,7 @@
             border-color: #4facfe;
         }
 
-        /* Secci贸n de consulta para padres */
+        /* Sección de consulta para padres */
         .parent-section {
             padding: 40px;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -714,51 +714,51 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>馃帗 Kardex Estudiantil</h1>
-            <p>Sistema de seguimiento acad茅mico unificado</p>
+            <h1>🎓 Kardex Estudiantil</h1>
+            <p>Sistema de seguimiento académico unificado</p>
         </div>
 
-        <!-- Panel de Administraci贸n -->
+        <!-- Panel de Administración -->
         <div class="admin-section">
             <div class="admin-login">
-                <h3>馃攼 Acceso de Administrador</h3>
+                <h3>🔐 Acceso de Administrador</h3>
                 <input type="password" id="adminPassword" class="admin-input" placeholder="Clave de administrador" onkeypress="if(event.key==='Enter') checkAdminAccess()">
-                <button class="btn btn-primary" onclick="checkAdminAccess()">馃敁 Ingresar</button>
+                <button class="btn btn-primary" onclick="checkAdminAccess()">🔓 Ingresar</button>
             </div>
             
             <div id="adminPanel" class="admin-panel">
-                <h3>Panel de Administraci贸n</h3>
+                <h3>Panel de Administración</h3>
                 
-                <!-- Selecci贸n de curso -->
+                <!-- Selección de curso -->
                 <div id="courseSelection" style="margin-bottom: 20px;">
-                    <h4>馃摎 Seleccionar Curso a Administrar</h4>
+                    <h4>📚 Seleccionar Curso a Administrar</h4>
                     <div style="display: flex; gap: 15px; align-items: end;">
                         <select id="adminCourseSelect" class="form-select" style="flex: 1;">
                             <option value="">Seleccionar curso...</option>
                         </select>
-                        <button class="btn btn-primary" onclick="loadCourseData()">馃搨 Cargar Curso</button>
+                        <button class="btn btn-primary" onclick="loadCourseData()">📂 Cargar Curso</button>
                     </div>
                 </div>
                 
-                <!-- Gesti贸n de asignaturas -->
+                <!-- Gestión de asignaturas -->
                 <div id="subjectManagement" style="display: none; margin-bottom: 20px;">
-                    <h4>馃摑 Gesti贸n de Asignaturas</h4>
+                    <h4>📝 Gestión de Asignaturas</h4>
                     <div style="display: flex; gap: 15px; margin-bottom: 15px;">
                         <input type="text" id="newSubject" class="form-input" placeholder="Nueva asignatura" style="flex: 1;">
-                        <button class="btn btn-success" onclick="addSubject()">鉃?Agregar</button>
+                        <button class="btn btn-success" onclick="addSubject()">➕ Agregar</button>
                     </div>
                     <div id="subjectsList" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;"></div>
                 </div>
                 
-                <!-- Filtros de b煤squeda -->
-                <h4>馃攳 Filtros de B煤squeda</h4>
+                <!-- Filtros de búsqueda -->
+                <h4>🔍 Filtros de Búsqueda</h4>
                 <div class="form-row-filters">
                     <input type="text" id="filterName" class="form-input" placeholder="Buscar por nombre...">
-                    <button class="btn btn-primary" onclick="filterStudents()">馃攳 Buscar</button>
+                    <button class="btn btn-primary" onclick="filterStudents()">🔍 Buscar</button>
                 </div>
                 
                 <!-- Agregar Estudiante -->
-                <h4>鉃?Agregar Estudiante</h4>
+                <h4>➕ Agregar Estudiante</h4>
                 <div class="form-row">
                     <input type="text" id="studentName" class="form-input" placeholder="Nombre completo">
                     <input type="text" id="studentInitials" class="form-input" placeholder="Iniciales (ABID)" style="text-transform: uppercase;">
@@ -767,39 +767,39 @@
                 </div>
 
                 <!-- Registrar Incidencia -->
-                <h4 style="margin-top: 25px;">鈿狅笍 Registrar Incidencia</h4>
+                <h4 style="margin-top: 25px;">⚠️ Registrar Incidencia</h4>
                 <div class="form-row-incident">
                     <select id="incidentStudent" class="form-select">
                         <option value="">Seleccionar estudiante...</option>
                     </select>
                     <select id="incidentSubject" class="form-select">
-                        <!-- Se llenar谩 din谩micamente con las asignaturas del curso -->
+                        <!-- Se llenará dinámicamente con las asignaturas del curso -->
                     </select>
                     <select id="incidentType" class="form-select">
-                        <option value="No entreg贸 tarea">No entreg贸 tarea</option>
+                        <option value="No entregó tarea">No entregó tarea</option>
                         <option value="Tardanza">Tardanza</option>
                         <option value="Falta injustificada">Falta injustificada</option>
                         <option value="Mal comportamiento">Mal comportamiento</option>
                         <option value="No trajo materiales">No trajo materiales</option>
-                        <option value="No sigui贸 instrucciones">No sigui贸 instrucciones</option>
-                        <option value="Disrupci贸n en clase">Disrupci贸n en clase</option>
-                        <option value="No particip贸">No particip贸</option>
+                        <option value="No siguió instrucciones">No siguió instrucciones</option>
+                        <option value="Disrupción en clase">Disrupción en clase</option>
+                        <option value="No participó">No participó</option>
                     </select>
                     <input type="date" id="incidentDate" class="form-input">
                     <button class="btn btn-danger" onclick="addIncident()">Registrar</button>
                 </div>
 
-                <!-- Observaci贸n espec铆fica -->
+                <!-- Observación específica -->
                 <div class="form-row-observation">
-                    <textarea id="incidentObservation" class="form-textarea" placeholder="Observaci贸n espec铆fica (opcional): Describe lo que sucedi贸..."></textarea>
+                    <textarea id="incidentObservation" class="form-textarea" placeholder="Observación específica (opcional): Describe lo que sucedió..."></textarea>
                 </div>
 
                 <!-- Herramientas -->
                 <div style="margin-top: 30px; text-align: center;">
-                    <button class="btn btn-primary" onclick="exportData()">馃捑 Exportar Datos</button>
+                    <button class="btn btn-primary" onclick="exportData()">💾 Exportar Datos</button>
                     <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
-                    <button class="btn btn-primary" onclick="document.getElementById('importFile').click()">馃搨 Importar Datos</button>
-                    <button class="btn btn-success" onclick="loadAllStudentsAdmin()">馃懃 Ver Todos</button>
+                    <button class="btn btn-primary" onclick="document.getElementById('importFile').click()">📂 Importar Datos</button>
+                    <button class="btn btn-success" onclick="loadAllStudentsAdmin()">👥 Ver Todos</button>
                 </div>
             </div>
         </div>
@@ -807,8 +807,8 @@
         <!-- Consulta para Padres -->
         <div class="parent-section">
             <div class="parent-search">
-                <h2>馃懆鈥嶐煈┾€嶐煈р€嶐煈?Consulta para Padres</h2>
-                <p>Ingrese las <strong>iniciales</strong> y seleccione el <strong>curso</strong> de su hijo/hija para consultar su estado acad茅mico.</p>
+                <h2>👨‍👩‍👧‍👦 Consulta para Padres</h2>
+                <p>Ingrese las <strong>iniciales</strong> y seleccione el <strong>curso</strong> de su hijo/hija para consultar su estado académico.</p>
                 
                 <div class="search-container">
                     <div class="search-fields">
@@ -817,7 +817,7 @@
                             <option value="">Seleccionar curso...</option>
                         </select>
                     </div>
-                    <button class="btn btn-primary" onclick="searchByInitials()">馃攳 Consultar Estado</button>
+                    <button class="btn btn-primary" onclick="searchByInitials()">🔍 Consultar Estado</button>
                 </div>
             </div>
         </div>
@@ -825,12 +825,12 @@
         <!-- Resultados -->
         <div class="results">
             <div id="loadingIndicator" class="loading" style="display: none;">
-                <div style="font-size: 3em; margin-bottom: 20px;">鈴?/div>
-                <h3>Cargando informaci贸n...</h3>
+                <div style="font-size: 3em; margin-bottom: 20px;">⏳</div>
+                <h3>Cargando información...</h3>
             </div>
             <div id="resultsContainer">
                 <div class="no-data">
-                    <h3>馃搵 Sistema de Kardex</h3>
+                    <h3>📋 Sistema de Kardex</h3>
                     <p>Los administradores pueden agregar estudiantes e incidencias.<br>
                     Los padres pueden consultar el estado de sus hijos usando las iniciales de sus nombres y seleccionando el curso.</p>
                 </div>
@@ -842,7 +842,7 @@
     <div id="editModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">鉁忥笍 Editar Incidencia</h2>
+                <h2 class="modal-title">✏️ Editar Incidencia</h2>
                 <span class="close" onclick="closeEditModal()">&times;</span>
             </div>
             <div>
@@ -852,21 +852,21 @@
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px; font-weight: bold;">Materia:</label>
                     <select id="editSubject" class="form-select" style="width: 100%;">
-                        <!-- Se llenar谩 din谩micamente -->
+                        <!-- Se llenará dinámicamente -->
                     </select>
                 </div>
 
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px; font-weight: bold;">Tipo:</label>
                     <select id="editType" class="form-select" style="width: 100%;">
-                        <option value="No entreg贸 tarea">No entreg贸 tarea</option>
+                        <option value="No entregó tarea">No entregó tarea</option>
                         <option value="Tardanza">Tardanza</option>
                         <option value="Falta injustificada">Falta injustificada</option>
                         <option value="Mal comportamiento">Mal comportamiento</option>
                         <option value="No trajo materiales">No trajo materiales</option>
-                        <option value="No sigui贸 instrucciones">No sigui贸 instrucciones</option>
-                        <option value="Disrupci贸n en clase">Disrupci贸n en clase</option>
-                        <option value="No particip贸">No particip贸</option>
+                        <option value="No siguió instrucciones">No siguió instrucciones</option>
+                        <option value="Disrupción en clase">Disrupción en clase</option>
+                        <option value="No participó">No participó</option>
                     </select>
                 </div>
 
@@ -876,13 +876,13 @@
                 </div>
 
                 <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Observaci贸n:</label>
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Observación:</label>
                     <textarea id="editObservation" class="form-textarea" style="width: 100%;"></textarea>
                 </div>
 
                 <div style="text-align: center; margin-top: 20px;">
-                    <button class="btn btn-success" onclick="saveEditIncident()">馃捑 Guardar Cambios</button>
-                    <button class="btn btn-danger" onclick="closeEditModal()">鉂?Cancelar</button>
+                    <button class="btn btn-success" onclick="saveEditIncident()">💾 Guardar Cambios</button>
+                    <button class="btn btn-danger" onclick="closeEditModal()">❌ Cancelar</button>
                 </div>
             </div>
         </div>
@@ -892,7 +892,7 @@
     <div id="reportModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">馃搫 Generar Reporte</h2>
+                <h2 class="modal-title">📄 Generar Reporte</h2>
                 <span class="close" onclick="closeReportModal()">&times;</span>
             </div>
             <div class="report-options">
@@ -906,13 +906,13 @@
                 <div class="checkbox-group" id="subjectsCheckboxes"></div>
             </div>
             <div style="text-align: center;">
-                <button class="btn btn-primary" onclick="generateReport()">馃枿锔?Generar e Imprimir</button>
-                <button class="btn btn-danger" onclick="closeReportModal()">鉂?Cancelar</button>
+                <button class="btn btn-primary" onclick="generateReport()">🖨️ Generar e Imprimir</button>
+                <button class="btn btn-danger" onclick="closeReportModal()">❌ Cancelar</button>
             </div>
         </div>
     </div>
 
-    <!-- 脕rea de impresi贸n (oculta) -->
+    <!-- Área de impresión (oculta) -->
     <div id="printArea" class="print-area" style="display: none;"></div>
 
     <!-- Firebase SDK -->
@@ -994,27 +994,27 @@
                 
                 const teacherInfo = document.createElement('div');
                 teacherInfo.style.cssText = 'background: #d4edda; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center;';
-                teacherInfo.innerHTML = '<strong>鉁?Sesi贸n de administrador iniciada</strong><br>Seleccione un curso para administrar';
+                teacherInfo.innerHTML = '<strong>✅ Sesión de administrador iniciada</strong><br>Seleccione un curso para administrar';
                 
                 const adminPanel = document.getElementById('adminPanel');
                 adminPanel.insertBefore(teacherInfo, adminPanel.firstChild);
                 
-                alert('鉁?Acceso de administrador concedido');
+                alert('✅ Acceso de administrador concedido');
             } else if (password.length > 0) {
-                alert('鉂?Clave de administrador incorrecta');
+                alert('❌ Clave de administrador incorrecta');
             }
         };
 
         // Load course data for admin
         window.loadCourseData = async function() {
             if (!isAdminLoggedIn) {
-                alert('鉂?Acceso denegado');
+                alert('❌ Acceso denegado');
                 return;
             }
 
             const course = document.getElementById('adminCourseSelect').value;
             if (!course) {
-                alert('鉂?Seleccione un curso');
+                alert('❌ Seleccione un curso');
                 return;
             }
 
@@ -1046,8 +1046,8 @@
                 } else {
                     // Si no hay asignaturas, crear las predeterminadas
                     const defaultSubjects = [
-                        "Matem谩ticas", "Lenguaje", "Psicolog铆a-Filosof铆a", "Biolog铆a-Geograf铆a",
-                        "Ciencias Sociales", "F铆sica-Qu铆mica", "Ingl茅s", "Computaci贸n"
+                        "Matemáticas", "Lenguaje", "Psicología-Filosofía", "Biología-Geografía",
+                        "Ciencias Sociales", "Física-Química", "Inglés", "Computación"
                     ];
                     
                     for (const subjectName of defaultSubjects) {
@@ -1077,7 +1077,7 @@
                 
             } catch (error) {
                 console.error('Error loading subjects:', error);
-                alert('鉂?Error al cargar las asignaturas');
+                alert('❌ Error al cargar las asignaturas');
             }
         }
 
@@ -1095,8 +1095,8 @@
                 const subjectItem = document.createElement('div');
                 subjectItem.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 10px; background: white; border-radius: 8px; margin-bottom: 8px;';
                 subjectItem.innerHTML = `
-                    <span>馃摎 ${subject.name}</span>
-                    <button class="btn-small btn-danger" onclick="deleteSubject('${subject.id}')">馃棏锔?Eliminar</button>
+                    <span>📚 ${subject.name}</span>
+                    <button class="btn-small btn-danger" onclick="deleteSubject('${subject.id}')">🗑️ Eliminar</button>
                 `;
                 subjectsList.appendChild(subjectItem);
             });
@@ -1105,13 +1105,13 @@
         // Add subject
         window.addSubject = async function() {
             if (!isAdminLoggedIn || !currentAdminCourse) {
-                alert('鉂?Acceso denegado o curso no seleccionado');
+                alert('❌ Acceso denegado o curso no seleccionado');
                 return;
             }
 
             const subjectName = document.getElementById('newSubject').value.trim();
             if (!subjectName) {
-                alert('鉂?Ingrese el nombre de la asignatura');
+                alert('❌ Ingrese el nombre de la asignatura');
                 return;
             }
 
@@ -1123,21 +1123,21 @@
                 
                 document.getElementById('newSubject').value = '';
                 await loadCourseSubjects(currentAdminCourse);
-                alert('鉁?Asignatura agregada correctamente');
+                alert('✅ Asignatura agregada correctamente');
             } catch (error) {
                 console.error('Error adding subject:', error);
-                alert('鉂?Error al agregar la asignatura');
+                alert('❌ Error al agregar la asignatura');
             }
         };
 
         // Delete subject
         window.deleteSubject = async function(subjectId) {
             if (!isAdminLoggedIn) {
-                alert('鉂?Acceso denegado');
+                alert('❌ Acceso denegado');
                 return;
             }
 
-            if (!confirm('驴Est谩 seguro de que desea eliminar esta asignatura? Esto tambi茅n eliminar谩 todas las incidencias relacionadas.')) {
+            if (!confirm('¿Está seguro de que desea eliminar esta asignatura? Esto también eliminará todas las incidencias relacionadas.')) {
                 return;
             }
 
@@ -1158,10 +1158,10 @@
                 await Promise.all(deletePromises);
                 
                 await loadCourseSubjects(currentAdminCourse);
-                alert('鉁?Asignatura eliminada correctamente');
+                alert('✅ Asignatura eliminada correctamente');
             } catch (error) {
                 console.error('Error deleting subject:', error);
-                alert('鉂?Error al eliminar la asignatura');
+                alert('❌ Error al eliminar la asignatura');
             }
         };
 
@@ -1180,7 +1180,7 @@
                 displayStudents(students);
             } catch (error) {
                 console.error('Error loading students:', error);
-                alert('鉂?Error al cargar los estudiantes');
+                alert('❌ Error al cargar los estudiantes');
             }
         }
 
@@ -1213,7 +1213,7 @@
         // Add student
         window.addStudent = async function() {
             if (!isAdminLoggedIn || !currentAdminCourse) {
-                alert('鉂?Acceso denegado o curso no seleccionado');
+                alert('❌ Acceso denegado o curso no seleccionado');
                 return;
             }
 
@@ -1222,7 +1222,7 @@
             const parentEmail = document.getElementById('parentEmail').value.trim();
 
             if (!name || !initials) {
-                alert('鉂?Complete nombre e iniciales');
+                alert('❌ Complete nombre e iniciales');
                 return;
             }
 
@@ -1241,17 +1241,17 @@
                 
                 await loadCourseStudents(currentAdminCourse);
                 await loadAllStudentsForSelect();
-                alert('鉁?Estudiante agregado correctamente');
+                alert('✅ Estudiante agregado correctamente');
             } catch (error) {
                 console.error('Error adding student:', error);
-                alert('鉂?Error al agregar el estudiante');
+                alert('❌ Error al agregar el estudiante');
             }
         };
 
         // Add incident
         window.addIncident = async function() {
             if (!isAdminLoggedIn) {
-                alert('鉂?Acceso denegado');
+                alert('❌ Acceso denegado');
                 return;
             }
 
@@ -1262,7 +1262,7 @@
             const observation = document.getElementById('incidentObservation').value.trim();
 
             if (!studentId || !subject || !type || !date) {
-                alert('鉂?Complete todos los campos obligatorios');
+                alert('❌ Complete todos los campos obligatorios');
                 return;
             }
 
@@ -1277,13 +1277,13 @@
                 });
 
                 document.getElementById('incidentObservation').value = '';
-                alert('鉁?Incidencia registrada correctamente');
+                alert('✅ Incidencia registrada correctamente');
                 
                 // Recargar estudiantes para mostrar la nueva incidencia
                 await loadCourseStudents(currentAdminCourse);
             } catch (error) {
                 console.error('Error adding incident:', error);
-                alert('鉂?Error al registrar la incidencia');
+                alert('❌ Error al registrar la incidencia');
             }
         };
 
@@ -1293,7 +1293,7 @@
             const course = document.getElementById('parentCourseSearch').value;
 
             if (!initials || !course) {
-                alert('鉂?Ingrese las iniciales y seleccione el curso');
+                alert('❌ Ingrese las iniciales y seleccione el curso');
                 return;
             }
 
@@ -1309,7 +1309,7 @@
                     document.getElementById('loadingIndicator').style.display = 'none';
                     document.getElementById('resultsContainer').innerHTML = `
                         <div class="error">
-                            <h3>鉂?Estudiante no encontrado</h3>
+                            <h3>❌ Estudiante no encontrado</h3>
                             <p>Verifique las iniciales y el curso seleccionado</p>
                         </div>
                     `;
@@ -1328,7 +1328,7 @@
                 document.getElementById('loadingIndicator').style.display = 'none';
                 document.getElementById('resultsContainer').innerHTML = `
                     <div class="error">
-                        <h3>鉂?Error en la b煤squeda</h3>
+                        <h3>❌ Error en la búsqueda</h3>
                         <p>Intente nuevamente</p>
                     </div>
                 `;
@@ -1367,7 +1367,7 @@
 
                 if (totalIncidents >= 10) {
                     status = 'critical';
-                    statusText = 'Cr铆tico';
+                    statusText = 'Crítico';
                 } else if (totalIncidents >= 5) {
                     status = 'warning';
                     statusText = 'Preocupante';
@@ -1395,7 +1395,7 @@
                             
                             if (subjectCount >= 5) {
                                 subjectStatus = 'critical';
-                                subjectStatusText = 'Cr铆tico';
+                                subjectStatusText = 'Crítico';
                             } else if (subjectCount >= 3) {
                                 subjectStatus = 'warning';
                                 subjectStatusText = 'Preocupante';
@@ -1423,7 +1423,7 @@
                         }).join('')}
                     </div>
                     <div style="text-align: center; margin-top: 25px;">
-                        <button class="btn btn-primary" onclick="openReportModal('${student.id}')">馃搫 Generar Reporte</button>
+                        <button class="btn btn-primary" onclick="openReportModal('${student.id}')">📄 Generar Reporte</button>
                     </div>
                 `;
 
@@ -1463,7 +1463,7 @@
 
                 if (totalIncidents >= 10) {
                     status = 'critical';
-                    statusText = 'Cr铆tico';
+                    statusText = 'Crítico';
                 } else if (totalIncidents >= 5) {
                     status = 'warning';
                     statusText = 'Preocupante';
@@ -1491,7 +1491,7 @@
                             
                             if (subjectCount >= 5) {
                                 subjectStatus = 'critical';
-                                subjectStatusText = 'Cr铆tico';
+                                subjectStatusText = 'Crítico';
                             } else if (subjectCount >= 3) {
                                 subjectStatus = 'warning';
                                 subjectStatusText = 'Preocupante';
@@ -1512,8 +1512,8 @@
                                                 </div>
                                                 ${incident.observation ? `<div class="incident-observation">${incident.observation}</div>` : ''}
                                                 <div class="incident-actions">
-                                                    <button class="btn-small btn-edit" onclick="openEditModal('${student.id}', '${incident.id}')">鉁忥笍 Editar</button>
-                                                    <button class="btn-small btn-delete" onclick="deleteIncident('${incident.id}')">馃棏锔?Eliminar</button>
+                                                    <button class="btn-small btn-edit" onclick="openEditModal('${student.id}', '${incident.id}')">✏️ Editar</button>
+                                                    <button class="btn-small btn-delete" onclick="deleteIncident('${incident.id}')">🗑️ Eliminar</button>
                                                 </div>
                                             </div>
                                         `).join('')}
@@ -1523,8 +1523,8 @@
                         }).join('')}
                     </div>
                     <div class="admin-actions">
-                        <button class="btn btn-primary" onclick="openReportModal('${student.id}')">馃搫 Generar Reporte</button>
-                        <button class="btn btn-danger" onclick="deleteStudent('${student.id}')">馃棏锔?Eliminar Estudiante</button>
+                        <button class="btn btn-primary" onclick="openReportModal('${student.id}')">📄 Generar Reporte</button>
+                        <button class="btn btn-danger" onclick="deleteStudent('${student.id}')">🗑️ Eliminar Estudiante</button>
                     </div>
                 `;
 
@@ -1535,7 +1535,7 @@
         // Filter students
         window.filterStudents = async function() {
             if (!isAdminLoggedIn || !currentAdminCourse) {
-                alert('鉂?Acceso denegado o curso no seleccionado');
+                alert('❌ Acceso denegado o curso no seleccionado');
                 return;
             }
 
@@ -1557,14 +1557,14 @@
                 displayStudents(students);
             } catch (error) {
                 console.error('Error filtering students:', error);
-                alert('鉂?Error al filtrar estudiantes');
+                alert('❌ Error al filtrar estudiantes');
             }
         };
 
         // Load all students (admin)
         window.loadAllStudentsAdmin = async function() {
             if (!isAdminLoggedIn || !currentAdminCourse) {
-                alert('鉂?Acceso denegado o curso no seleccionado');
+                alert('❌ Acceso denegado o curso no seleccionado');
                 return;
             }
 
@@ -1575,14 +1575,14 @@
         // Open edit modal
         window.openEditModal = async function(studentId, incidentId) {
             if (!isAdminLoggedIn) {
-                alert('鉂?Acceso denegado');
+                alert('❌ Acceso denegado');
                 return;
             }
 
             try {
                 const incidentDoc = await getDocs(query(collection(db, 'incidents'), where('__name__', '==', incidentId)));
                 if (incidentDoc.empty) {
-                    alert('鉂?Incidencia no encontrada');
+                    alert('❌ Incidencia no encontrada');
                     return;
                 }
 
@@ -1611,7 +1611,7 @@
                 document.getElementById('editModal').style.display = 'block';
             } catch (error) {
                 console.error('Error opening edit modal:', error);
-                alert('鉂?Error al cargar la incidencia');
+                alert('❌ Error al cargar la incidencia');
             }
         };
 
@@ -1624,7 +1624,7 @@
         // Save edited incident
         window.saveEditIncident = async function() {
             if (!isAdminLoggedIn) {
-                alert('鉂?Acceso denegado');
+                alert('❌ Acceso denegado');
                 return;
             }
 
@@ -1636,7 +1636,7 @@
             const observation = document.getElementById('editObservation').value.trim();
 
             if (!subject || !type || !date) {
-                alert('鉂?Complete todos los campos obligatorios');
+                alert('❌ Complete todos los campos obligatorios');
                 return;
             }
 
@@ -1650,42 +1650,42 @@
 
                 closeEditModal();
                 await loadCourseStudents(currentAdminCourse);
-                alert('鉁?Incidencia actualizada correctamente');
+                alert('✅ Incidencia actualizada correctamente');
             } catch (error) {
                 console.error('Error updating incident:', error);
-                alert('鉂?Error al actualizar la incidencia');
+                alert('❌ Error al actualizar la incidencia');
             }
         };
 
         // Delete incident
         window.deleteIncident = async function(incidentId) {
             if (!isAdminLoggedIn) {
-                alert('鉂?Acceso denegado');
+                alert('❌ Acceso denegado');
                 return;
             }
 
-            if (!confirm('驴Est谩 seguro de que desea eliminar esta incidencia?')) {
+            if (!confirm('¿Está seguro de que desea eliminar esta incidencia?')) {
                 return;
             }
 
             try {
                 await deleteDoc(doc(db, 'incidents', incidentId));
                 await loadCourseStudents(currentAdminCourse);
-                alert('鉁?Incidencia eliminada correctamente');
+                alert('✅ Incidencia eliminada correctamente');
             } catch (error) {
                 console.error('Error deleting incident:', error);
-                alert('鉂?Error al eliminar la incidencia');
+                alert('❌ Error al eliminar la incidencia');
             }
         };
 
         // Delete student
         window.deleteStudent = async function(studentId) {
             if (!isAdminLoggedIn) {
-                alert('鉂?Acceso denegado');
+                alert('❌ Acceso denegado');
                 return;
             }
 
-            if (!confirm('驴Est谩 seguro de que desea eliminar este estudiante? Esto tambi茅n eliminar谩 todas sus incidencias.')) {
+            if (!confirm('¿Está seguro de que desea eliminar este estudiante? Esto también eliminará todas sus incidencias.')) {
                 return;
             }
 
@@ -1707,10 +1707,10 @@
                 
                 await loadCourseStudents(currentAdminCourse);
                 await loadAllStudentsForSelect();
-                alert('鉁?Estudiante eliminado correctamente');
+                alert('✅ Estudiante eliminado correctamente');
             } catch (error) {
                 console.error('Error deleting student:', error);
-                alert('鉂?Error al eliminar el estudiante');
+                alert('❌ Error al eliminar el estudiante');
             }
         };
 
@@ -1721,7 +1721,7 @@
             // Get student data
             const studentDoc = await getDocs(query(collection(db, 'students'), where('__name__', '==', studentId)));
             if (studentDoc.empty) {
-                alert('鉂?Estudiante no encontrado');
+                alert('❌ Estudiante no encontrado');
                 return;
             }
             
@@ -1782,14 +1782,14 @@
             });
             
             if (selectedSubjects.length === 0) {
-                alert('鉂?Seleccione al menos una materia');
+                alert('❌ Seleccione al menos una materia');
                 return;
             }
             
             // Get student data
             const studentDoc = await getDocs(query(collection(db, 'students'), where('__name__', '==', currentStudentForReport)));
             if (studentDoc.empty) {
-                alert('鉂?Estudiante no encontrado');
+                alert('❌ Estudiante no encontrado');
                 return;
             }
             
@@ -1813,16 +1813,16 @@
             printArea.innerHTML = `
                 <div class="print-report">
                     <div class="report-header">
-                        <h1 class="report-title">Reporte de Incidencias Acad茅micas</h1>
+                        <h1 class="report-title">Reporte de Incidencias Académicas</h1>
                         <p>Colegio "San Juan Bautista" - Sistema de Kardex</p>
                     </div>
                     
                     <div class="report-student-info">
-                        <h2>Informaci贸n del Estudiante</h2>
+                        <h2>Información del Estudiante</h2>
                         <p><strong>Nombre:</strong> ${student.name}</p>
                         <p><strong>Iniciales:</strong> ${student.initials}</p>
                         <p><strong>Curso:</strong> ${student.course}</p>
-                        <p><strong>Fecha de generaci贸n:</strong> ${new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                        <p><strong>Fecha de generación:</strong> ${new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
                     </div>
                     
                     <h2>Incidencias Registradas</h2>
@@ -1832,7 +1832,7 @@
                                 <th>Fecha</th>
                                 <th>Materia</th>
                                 <th>Tipo de Incidencia</th>
-                                <th>Observaci贸n</th>
+                                <th>Observación</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1848,7 +1848,7 @@
                     </table>
                     
                     <div class="report-footer">
-                        <p>Este reporte fue generado autom谩ticamente por el Sistema de Kardex Estudiantil</p>
+                        <p>Este reporte fue generado automáticamente por el Sistema de Kardex Estudiantil</p>
                     </div>
                 </div>
             `;
@@ -1863,7 +1863,7 @@
         // Export data
         window.exportData = async function() {
             if (!isAdminLoggedIn) {
-                alert('鉂?Acceso denegado');
+                alert('❌ Acceso denegado');
                 return;
             }
 
@@ -1894,17 +1894,17 @@
                 document.body.removeChild(link);
                 URL.revokeObjectURL(url);
 
-                alert('鉁?Datos exportados correctamente');
+                alert('✅ Datos exportados correctamente');
             } catch (error) {
                 console.error('Error exporting data:', error);
-                alert('鉂?Error al exportar los datos');
+                alert('❌ Error al exportar los datos');
             }
         };
 
         // Import data
         window.importData = async function(event) {
             if (!isAdminLoggedIn) {
-                alert('鉂?Acceso denegado');
+                alert('❌ Acceso denegado');
                 return;
             }
 
@@ -1916,7 +1916,7 @@
                 try {
                     const data = JSON.parse(e.target.result);
                     
-                    if (!confirm(`驴Est谩 seguro de que desea importar los datos? Esto agregar谩:\n- ${data.students?.length || 0} estudiantes\n- ${data.incidents?.length || 0} incidencias\n- ${data.subjects?.length || 0} asignaturas`)) {
+                    if (!confirm(`¿Está seguro de que desea importar los datos? Esto agregará:\n- ${data.students?.length || 0} estudiantes\n- ${data.incidents?.length || 0} incidencias\n- ${data.subjects?.length || 0} asignaturas`)) {
                         return;
                     }
 
@@ -1941,7 +1941,7 @@
                         }
                     }
 
-                    alert('鉁?Datos importados correctamente');
+                    alert('✅ Datos importados correctamente');
                     
                     // Reload current course data
                     if (currentAdminCourse) {
@@ -1949,7 +1949,7 @@
                     }
                 } catch (error) {
                     console.error('Error importing data:', error);
-                    alert('鉂?Error al importar los datos');
+                    alert('❌ Error al importar los datos');
                 }
             };
             reader.readAsText(file);
